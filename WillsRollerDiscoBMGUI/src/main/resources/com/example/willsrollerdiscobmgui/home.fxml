@@ -9,11 +9,11 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="mainPanel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #2D2D2D;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane id="mainPanel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #2D2D2D;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.willsrollerdiscobmgui.sceneSelector">
    <children>
       <AnchorPane id="menuPanel" prefHeight="600.0" prefWidth="138.0">
          <children>
-            <Button id="homeButton" layoutX="4.0" layoutY="86.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="130.0" style="-fx-background-color: #2D2D2D;" styleClass="menuButton" text="Home" textFill="WHITE">
+            <Button id="homeButton" layoutX="4.0" layoutY="86.0" mnemonicParsing="false" onAction="#switchToHome" prefHeight="36.0" prefWidth="130.0" style="-fx-background-color: #2D2D2D;" styleClass="menuButton" text="Home" textFill="WHITE">
                <font>
                   <Font size="14.0" />
                </font>
@@ -22,18 +22,18 @@
                <font>
                   <Font size="18.0" />
                </font></Label>
-            <Button id="announcementsButton" layoutX="14.0" layoutY="122.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="130.0" style="-fx-background-color: #2D2D2D;" styleClass="menuButton" text="Announcements" textFill="#bebebe" wrapText="true" />
-            <Button id="ticketsButton" layoutX="-9.0" layoutY="158.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="130.0" style="-fx-background-color: #2D2D2D;" styleClass="menuButton" text="Tickets" textFill="#bebebe">
+            <Button id="announcementsButton" layoutX="14.0" layoutY="122.0" mnemonicParsing="false" onAction="#switchToAnnouncements" prefHeight="36.0" prefWidth="130.0" style="-fx-background-color: #2D2D2D;" styleClass="menuButton" text="Announcements" textFill="#bebebe" wrapText="true" />
+            <Button id="ticketsButton" layoutX="-9.0" layoutY="158.0" mnemonicParsing="false" onAction="#switchToTickets" prefHeight="36.0" prefWidth="130.0" style="-fx-background-color: #2D2D2D;" styleClass="menuButton" text="Tickets" textFill="#bebebe">
                <font>
                   <Font size="14.0" />
                </font>
             </Button>
-            <Button id="skateHireButton" layoutX="3.0" layoutY="194.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="130.0" style="-fx-background-color: #2D2D2D;" styleClass="menuButton" text="Skate Hire" textFill="#bebebe">
+            <Button id="skateHireButton" layoutX="3.0" layoutY="194.0" mnemonicParsing="false" onAction="#switchToSkateHire" prefHeight="36.0" prefWidth="130.0" style="-fx-background-color: #2D2D2D;" styleClass="menuButton" text="Skate Hire" textFill="#bebebe">
                <font>
                   <Font size="14.0" />
                </font>
             </Button>
-            <Button id="maintenanceButton" layoutX="7.0" layoutY="232.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="130.0" style="-fx-background-color: #2D2D2D;" styleClass="menuButton" text="Maintenance" textFill="#bebebe">
+            <Button id="maintenanceButton" layoutX="7.0" layoutY="232.0" mnemonicParsing="false" onAction="#switchToMaintenance" prefHeight="36.0" prefWidth="130.0" style="-fx-background-color: #2D2D2D;" styleClass="menuButton" text="Maintenance" textFill="#bebebe">
                <font>
                   <Font size="14.0" />
                </font>

@@ -13,7 +13,7 @@
    <children>
       <AnchorPane id="menuPanel" prefHeight="600.0" prefWidth="138.0">
          <children>
-            <Button id="homeButton" layoutX="4.0" layoutY="86.0" mnemonicParsing="false" onAction="#switchToHome" prefHeight="36.0" prefWidth="130.0" style="-fx-background-color: #2D2D2D;" styleClass="menuButton" text="Home" textFill="WHITE">
+            <Button id="homeButton" layoutX="4.0" layoutY="86.0" mnemonicParsing="false" onAction="#switchToHome" prefHeight="36.0" prefWidth="130.0" style="-fx-background-color: #2D2D2D;" styleClass="menuButton" text="Home" textFill="#bebebe">
                <font>
                   <Font size="14.0" />
                </font>
@@ -33,13 +33,13 @@
                   <Font size="14.0" />
                </font>
             </Button>
-            <Button id="maintenanceButton" layoutX="7.0" layoutY="232.0" mnemonicParsing="false" onAction="#switchToMaintenance" prefHeight="36.0" prefWidth="130.0" style="-fx-background-color: #2D2D2D;" styleClass="menuButton" text="Maintenance" textFill="#bebebe">
+            <Button id="maintenanceButton" layoutX="7.0" layoutY="232.0" mnemonicParsing="false" onAction="#switchToMaintenance" prefHeight="36.0" prefWidth="130.0" style="-fx-background-color: #2D2D2D;" styleClass="menuButton" text="Maintenance" textFill="WHITE">
                <font>
                   <Font size="14.0" />
                </font>
             </Button>
             <ImageView layoutX="4.0" layoutY="89.0">
-               <Image url="@assets/home-white.png" />
+               <Image url="@assets/home-grey.png" />
             </ImageView>
             <ImageView layoutX="3.0" layoutY="124.0">
                <Image url="@assets/announcement-grey.png" />
@@ -51,7 +51,7 @@
                <Image url="@assets/skate-grey.png" />
             </ImageView>
             <ImageView layoutX="3.0" layoutY="235.0">
-               <Image url="@assets/tools-grey.png" />
+               <Image url="@assets/tools-white.png" />
             </ImageView>
          </children>
       </AnchorPane>
@@ -71,23 +71,27 @@
       </AnchorPane>
       <AnchorPane id="statusBar" layoutX="158.0" layoutY="525.0" prefHeight="66.0" prefWidth="641.0" style="-fx-background-color: 2D2D2D;">
          <children>
-            <Button id="statusButton" layoutX="40.0" layoutY="15.0" mnemonicParsing="false" style="-fx-background-radius: 15px; -fx-background-color: #48992B;" text="Start Session">
+            <Button id="statusButton" layoutX="40.0" layoutY="15.0" mnemonicParsing="false" prefWidth="103.0" style="-fx-background-radius: 15px; -fx-background-color: #48992B;" text="Create">
                <font>
                   <Font size="16.0" />
-               </font></Button>
-            <Label id="currentStatusLabel" layoutX="435.0" layoutY="8.0" text="Current Status:" textFill="#bebebe">
+               </font>
+            </Button>
+            <Button id="statusButton" layoutX="265.0" layoutY="15.0" mnemonicParsing="false" prefWidth="103.0" style="-fx-background-radius: 15px; -fx-background-color: #53DEBC;" text="Update">
                <font>
                   <Font size="16.0" />
-               </font></Label>
-            <Text id="currentStatusText" fill="#bebebe" layoutX="434.0" layoutY="52.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="106.93670654296875">
+               </font>
+            </Button>
+            <Button id="statusButton" layoutX="482.0" layoutY="15.0" mnemonicParsing="false" prefWidth="103.0" style="-fx-background-radius: 15px; -fx-background-color: #FA3837;" text="Delete" textFill="#bebebe">
                <font>
                   <Font size="16.0" />
-               </font></Text>
+               </font>
+            </Button>
          </children>
       </AnchorPane>
       <AnchorPane layoutX="141.0" layoutY="68.0" prefHeight="450.0" prefWidth="662.0">
          <children>
-            <AnchorPane layoutX="40.0" layoutY="30.0" prefHeight="387.0" prefWidth="568.0" style="-fx-background-color: #525252; -fx-background-radius: 15px;" />
+            <AnchorPane layoutX="40.0" layoutY="30.0" prefHeight="250.0" prefWidth="568.0" style="-fx-background-color: #525252; -fx-background-radius: 15px;" />
+            <AnchorPane layoutX="40.0" layoutY="304.0" prefHeight="136.0" prefWidth="568.0" style="-fx-background-color: #525252; -fx-background-radius: 15px;" />
          </children></AnchorPane>
    </children>
 </AnchorPane>
