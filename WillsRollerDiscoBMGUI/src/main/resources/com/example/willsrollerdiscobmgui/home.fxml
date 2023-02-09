@@ -71,23 +71,31 @@
       </AnchorPane>
       <AnchorPane id="statusBar" layoutX="158.0" layoutY="525.0" prefHeight="66.0" prefWidth="641.0" style="-fx-background-color: 2D2D2D;">
          <children>
-            <Button id="statusButton" layoutX="40.0" layoutY="15.0" mnemonicParsing="false" style="-fx-background-radius: 15px; -fx-background-color: #48992B;" text="Start Session">
+            <Button id="statusButton" fx:id="startSessionButton" layoutX="40.0" layoutY="15.0" mnemonicParsing="false" onAction="#startSession" style="-fx-background-radius: 15px; -fx-background-color: #48992B;" text="Start Session">
                <font>
                   <Font size="16.0" />
-               </font></Button>
-            <Label id="currentStatusLabel" layoutX="435.0" layoutY="8.0" text="Current Status:" textFill="#bebebe">
+               </font>
+            </Button>
+            <Label id="currentStatusLabel" layoutX="435.0" layoutY="1.0" text="Current Status:" textFill="#bebebe">
                <font>
                   <Font size="16.0" />
                </font></Label>
-            <Text id="currentStatusText" fill="#bebebe" layoutX="434.0" layoutY="52.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="106.93670654296875">
+            <Label id="currentStatusLabel" fx:id="currentStatusText" layoutX="435.0" layoutY="20.0" text="Stopped" textFill="#bebebe">
                <font>
                   <Font size="16.0" />
-               </font></Text>
+               </font>
+            </Label>
+            <Button id="statusButton" fx:id="stopSessionButton" layoutX="39.0" layoutY="15.0" mnemonicParsing="false" onAction="#stopSession" style="-fx-background-radius: 15px; -fx-background-color: #FA3837;" text="Stop Session" textFill="WHITE" visible="false">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Button>
          </children>
       </AnchorPane>
       <AnchorPane layoutX="141.0" layoutY="68.0" prefHeight="450.0" prefWidth="662.0">
          <children>
             <AnchorPane layoutX="40.0" layoutY="30.0" prefHeight="387.0" prefWidth="568.0" style="-fx-background-color: #525252; -fx-background-radius: 15px;" />
          </children></AnchorPane>
+      <Label layoutX="500.0" layoutY="634.0" prefHeight="18.0" prefWidth="111.0" text="Text" textFill="#b9b9b900" />
    </children>
 </AnchorPane>

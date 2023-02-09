@@ -24,11 +24,14 @@ public class HelloApplication extends Application {
 
         stage.setScene(scene);
         stage.show();
-
-
     }
 
     public static void main(String[] args) {
+        //Database Connection
+        DBConnect connect = new DBConnect();
+        connect.connect();
+
+        //Launches the app
         launch();
     }
 }
