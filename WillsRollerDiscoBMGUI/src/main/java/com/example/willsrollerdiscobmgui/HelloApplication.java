@@ -30,7 +30,6 @@ public class HelloApplication extends Application {
         //Database Connection
         DBConnect connect = new DBConnect();
         connect.connect();
-
         //Launches the app
         launch();
     }

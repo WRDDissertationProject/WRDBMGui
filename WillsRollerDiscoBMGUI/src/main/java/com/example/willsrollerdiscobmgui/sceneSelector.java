@@ -126,6 +126,9 @@ public class sceneSelector implements Initializable {
        sessionStarted = true;
        System.out.println(sessionStarted);
        this.stopSessionButton.setVisible(true);
+
+        getStartingSkates startingSkates = new getStartingSkates();
+        startingSkates.initialiseSkates();
     }
 
     @FXML
