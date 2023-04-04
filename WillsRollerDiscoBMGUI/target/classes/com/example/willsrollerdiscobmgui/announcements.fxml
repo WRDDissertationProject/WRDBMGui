@@ -82,7 +82,7 @@
                   <Font size="16.0" />
                </font>
             </Button>
-            <Button id="statusButton" layoutX="482.0" layoutY="15.0" mnemonicParsing="false" prefWidth="103.0" style="-fx-background-radius: 15px; -fx-background-color: #FA3837;" text="Delete" textFill="#bebebe">
+            <Button id="statusButton" layoutX="482.0" layoutY="15.0" mnemonicParsing="false" onMouseClicked="#deleteAnnouncement" prefWidth="103.0" style="-fx-background-radius: 15px; -fx-background-color: #FA3837;" text="Delete" textFill="#bebebe">
                <font>
                   <Font size="16.0" />
                </font>
@@ -98,11 +98,11 @@
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <ListView id="CAListView" fx:id="CAListView" layoutY="36.0" prefHeight="200.0" prefWidth="568.0" />
+                  <ListView id="CAListView" fx:id="CAListView" layoutY="36.0" onMouseClicked="#selectAnnouncement" prefHeight="200.0" prefWidth="568.0" />
                </children></AnchorPane>
             <AnchorPane layoutX="40.0" layoutY="304.0" prefHeight="136.0" prefWidth="568.0" style="-fx-background-color: #525252; -fx-background-radius: 15px;">
                <children>
-                  <TextArea fx:id="newAnnouncementText" layoutX="7.0" layoutY="7.0" prefHeight="118.0" prefWidth="553.0" promptText="Enter Your Announcement" />
+                  <TextArea id="announcementsTextBox" fx:id="newAnnouncementText" layoutX="7.0" layoutY="7.0" prefHeight="118.0" prefWidth="553.0" promptText="Enter Your Announcement" />
                </children></AnchorPane>
          </children></AnchorPane>
    </children>

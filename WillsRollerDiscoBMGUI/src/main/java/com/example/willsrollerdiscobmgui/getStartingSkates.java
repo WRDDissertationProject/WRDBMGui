@@ -22,10 +22,5 @@ public class getStartingSkates {
         DBConnect.insertIntoCurrentSkates("4",size4Max);
         DBConnect.insertIntoCurrentSkates("5",size5Max);
 
-
-        //insert max into table
-        //print to test
     }
-
-    //once working, set new table values as these
 }

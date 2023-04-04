@@ -9,4 +9,14 @@ public class errors {
         return emptyField;
     }
 
+    public static Alert deleteComplete() {
+        Alert deleteComplete = new Alert(Alert.AlertType.INFORMATION,"Record Successfully Deleted", ButtonType.CLOSE);
+        return deleteComplete;
+    }
+
+    public static Alert deleteNotComplete() {
+        Alert deleteNotComplete = new Alert(Alert.AlertType.ERROR, "Error: Record Could Not be Completed", ButtonType.OK);
+        return deleteNotComplete;
+    }
+
 }
