@@ -36,6 +36,60 @@ public class DBConnect {
         return data;
     }
 
+    public static void insertMaintenance(String typeIn, String details, String skateSizeIn) {
+        try {
+            Statement stmt = connection.createStatement();
+            String sql = "INSERT INTO maintenance(maintenance_type, maintenance_details, skateSize)" +
+                    " VALUES('" + typeIn + "', '" + details + "', '" + skateSizeIn + "')";
+            stmt.executeUpdate(sql);
+            System.out.println("Inserted Into Database");
+
+            if (skateSizeIn != null) {
+                int currentAmount = fetchSkateSizeCurrent(skateSizeIn);
+                int newAmount = currentAmount - 1;
+
+                int inventoryAmount = fetchSkateSizeAmount(skateSizeIn);
+                int newInventoryAmount = inventoryAmount - 1;
+                DBConnect.updateSkateSizeAmount(skateSizeIn, newAmount);
+                DBConnect.updateSkateInventory(skateSizeIn, newInventoryAmount);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+            System.out.println("Announcement not inserted");
+        }
+    }
+
+    public static void updateSkateSizeAmount(String skateSize, int newAmount) {
+        try {
+            PreparedStatement stmt = connection.prepareStatement("UPDATE current_skates SET skateAmount = ? WHERE skateSize = ?");
+            stmt.setInt(1, newAmount);
+            stmt.setString(2, skateSize);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+            System.out.println("Current skate amount not updated");
+        }
+    }
+
+    public static void updateSkateInventory(String skateSize, int newAmount) {
+        try {
+            PreparedStatement stmt = connection.prepareStatement("UPDATE skate_inventory SET skateAmount = ? WHERE skateSize = ?");
+            stmt.setInt(1, newAmount);
+            stmt.setString(2, skateSize);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+            System.out.println("Skate inventory not updated");
+        }
+
+    }
+
+    public static void resetLocks() throws SQLException {
+        PreparedStatement stmt = connection.prepareStatement("UPDATE locks SET lockedBy = null, lockTime = null");
+        stmt.executeUpdate();
+        System.out.println("Locks Reset");
+    }
+
     public void connect() {
         {
             try {
@@ -58,18 +112,22 @@ public class DBConnect {
         }
     }
 
-    public static void insertAnnouncement(String text) {
+    public static boolean insertAnnouncement(String text) {
         //insert into query
+        boolean success = false;
         try {
             Statement stmt = connection.createStatement();
             String sql = "INSERT INTO announcements(announcement_details) VALUES('" + text + "')";
             stmt.executeUpdate(sql);
             System.out.println("Inserted Into Database");
+            success = true;
 
         } catch (SQLException e) {
             System.out.println(e);
             System.out.println("Announcement not inserted");
+            success = false;
         }
+        return success;
     }
 
     public static List<String> loadAnnouncement() throws SQLException {
@@ -84,29 +142,56 @@ public class DBConnect {
         return announcementsList;
     }
 
+    public static List<String> loadAnnouncementSH() throws SQLException {
+        Statement stmt = connection.createStatement();
+        ResultSet resultSet = stmt.executeQuery("SELECT * FROM current_skates WHERE skateAmount <= 5");
+        List<String> announcementsSHList = new ArrayList<>();
+
+        while (resultSet.next()) {
+            String skateSize = resultSet.getString("skateSize");
+            String skateAmount = resultSet.getString("skateAmount");
+            announcementsSHList.add("Skate Size: " + skateSize + "\nSkate Amount: " + skateAmount);
+        }
+        return announcementsSHList;
+    }
+
     public static List<String> loadTicket() throws SQLException {
         Statement stmt = connection.createStatement();
-        ResultSet resultSet = stmt.executeQuery("SELECT ticket_details FROM tickets");
+        ResultSet resultSet = stmt.executeQuery("SELECT * FROM tickets");
         List<String> ticketsList = new ArrayList<>();
 
         while (resultSet.next()) {
             String ticket = resultSet.getString("ticket_details");
-            ticketsList.add(ticket);
+            String ticketDate = resultSet.getString("ticket_date");
+            String ticketTime = resultSet.getString("ticket_time");
+            String postedBy = resultSet.getString("staff_id");
+
+            ticketsList.add("Ticket Details: " + ticket
+            + "\nDate and Time Posted: " + ticketDate + " " +  ticketTime
+            + "\nPosted By: " + postedBy);
         }
         return ticketsList;
     }
 
     public static List<String> loadMaintenance() throws SQLException {
         Statement stmt = connection.createStatement();
-        ResultSet resultSet = stmt.executeQuery("SELECT maintenance_details FROM maintenance");
+        ResultSet resultSet = stmt.executeQuery("SELECT * FROM maintenance");
         List<String> maintenanceList = new ArrayList<>();
 
         while (resultSet.next()) {
             String record = resultSet.getString("maintenance_details");
-            maintenanceList.add(record);
+            String type = resultSet.getString("maintenance_type");
+            String skateSize = resultSet.getString("skateSize");
+
+            if((skateSize == null) || (skateSize.equals("null"))){
+                skateSize = "N/A";
+            }
+            maintenanceList.add(
+                    "Details: " + record + "\nType: " + type + "\nSkate Size: " +skateSize);
         }
         return maintenanceList;
     }
+
 
     public static void insertCurrentSession(String fullDate, String date, String time) {
 
@@ -171,7 +256,26 @@ public class DBConnect {
 
     public static int fetchSkateSizeAmount(String skateSize) {
         int value = 0;
-        String query = "SELECT skateAmount FROM skate_inventory WHERE skateSize = '" + skateSize + "'";
+        String query = "SELECT skateAmount FROM skate_inventory WHERE skateSize = ?";
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, skateSize);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                value = resultSet.getInt("skateAmount");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return value;
+    }
+
+    public static int fetchSkateSizeCurrent(String skateSize) {
+        int value = 0;
+        String query = "SELECT skateAmount FROM current_skates WHERE skateSize = '" + skateSize + "'";
         try {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(query);
@@ -190,8 +294,7 @@ public class DBConnect {
     public static void insertIntoCurrentSkates(String skateSize, int skateAmount) {
         try {
             Statement stmt = connection.createStatement();
-            String sql = "UPDATE current_skates SET skateAmount = " + skateAmount + " WHERE skateSize = " + skateSize + " ";
-            //String sql = "INSERT INTO current_session(current_dateTime) VALUES('" + fullDate + "')";
+            String sql = "UPDATE current_skates SET skateAmount = " + skateAmount + " WHERE skateSize = '" + skateSize + "'";
             stmt.executeUpdate(sql);
             System.out.println("Inserted Skate Size Into Current Database");
 
@@ -201,8 +304,9 @@ public class DBConnect {
         }
     }
 
-    public static void insertTicket(String text) {
+    public static boolean insertTicket(String text) {
         //insert into query
+        boolean success = false;
         String ticketDate = dateTime.justDate();
         String ticketTime = dateTime.justTime();
         String postedBy = "Business Management Portal";
@@ -217,21 +321,16 @@ public class DBConnect {
             pstmt.setString(4, postedBy);
 
             pstmt.executeUpdate();
-            //Table: tickets
-            //Columns:
-            //ticket_id int AI PK
-            //ticket_date varchar(45)
-            //ticket_time varchar(45)
-            //ticket_details varchar(255)
-            //staff_id varchar(45)
-            //resolved char(1)
 
             System.out.println("Inserted Into Database");
+            success = true;
 
         } catch (SQLException e) {
             System.out.println(e);
             System.out.println("Announcement not inserted");
+            success = false;
         }
+        return success;
     }
     public static boolean checkForSessionStart() throws SQLException {
         boolean session = false;
@@ -243,15 +342,99 @@ public class DBConnect {
             } return session;
     }
 
-    public static void deleteTicket(String value){
-        String query = "SELECT * FROM tickets WHERE ticket_details = " + value + " ";
+    public static boolean deleteTicket(String value){
+        boolean success;
+        try {
+            Statement stmt = connection.createStatement();
+            String query = "DELETE FROM tickets WHERE ticket_details = '" + value + "'";
+            stmt.executeUpdate(query);
+            success = true;
+        }
+        catch (SQLException e) {
+            System.out.println(e);
+            System.out.println("Ticket not Deleted");
+            success = false;
+        }
+        return success;
     }
 
-    public static void deleteAnnouncement(String value) throws SQLException {
-        Statement stmt = connection.createStatement();
-        String query = "DELETE FROM announcements WHERE announcement_details = '" + value + "'";
-        stmt.executeUpdate(query);
-
+    public static boolean deleteAnnouncement(String value) throws SQLException {
+        boolean success;
+        try {
+            Statement stmt = connection.createStatement();
+            String query = "DELETE FROM announcements WHERE announcement_details = '" + value + "'";
+            stmt.executeUpdate(query);
+            success = true;
+        }
+        catch (SQLException e) {
+        System.out.println(e);
+        System.out.println("Announcement not Deleted");
+        success = false;
+        }
+        return success;
     }
+
+    public static boolean deleteMaintenance(String value, String skateSizeIn) throws SQLException {
+        boolean success;
+        try {
+            Statement stmt = connection.createStatement();
+            String query = "DELETE FROM maintenance WHERE maintenance_details = '" + value + "'";
+            stmt.executeUpdate(query);
+            success = true;
+
+            if (skateSizeIn != null) {
+                int currentAmount = fetchSkateSizeCurrent(skateSizeIn);
+                int newAmount = currentAmount + 1;
+
+                int inventoryAmount = fetchSkateSizeAmount(skateSizeIn);
+                int newInventoryAmount = inventoryAmount + 1;
+                DBConnect.updateSkateSizeAmount(skateSizeIn, newAmount);
+                DBConnect.updateSkateInventory(skateSizeIn, newInventoryAmount);
+            }
+        }
+        catch (SQLException e) {
+            System.out.println(e);
+            System.out.println("Maintenance not Deleted");
+            success = false;
+        }
+        return success;
+    }
+
+    public static boolean checkLogin(String username, String password) throws SQLException {
+        boolean loggedIn = false;
+        String query = "SELECT * FROM login WHERE username=? AND password=?";
+        PreparedStatement stmt = connection.prepareStatement(query);
+        stmt.setString(1, username);
+        stmt.setString(2, password);
+        ResultSet rs = stmt.executeQuery();
+        if (rs.next()) {
+            loggedIn = true;
+            System.out.print("Logged In");
+        }
+        else {
+            loggedIn = false;
+            System.out.print("Not Logged In");
+        }
+        return loggedIn;
+    }
+
+    public static String getSkateSizeFromMaintenance(String value) throws SQLException {
+        String skateSize = null;
+        PreparedStatement stmt = connection.prepareStatement("SELECT skateSize FROM maintenance WHERE maintenance_details = ?");
+        stmt.setString(1, value);
+        String queryString = stmt.toString();
+        System.out.println(queryString);
+        ResultSet rs = stmt.executeQuery();
+
+        if (rs.next()) {
+            skateSize = rs.getString("skateSize");
+        }
+
+        rs.close();
+        stmt.close();
+
+        return skateSize;
+    }
+
 }
 

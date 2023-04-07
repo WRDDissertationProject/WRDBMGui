@@ -10,7 +10,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="mainPanel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #2D2D2D;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.willsrollerdiscobmgui.sceneSelector">
+<AnchorPane id="mainPanel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #2D2D2D;" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.willsrollerdiscobmgui.sceneSelector">
    <children>
       <AnchorPane id="menuPanel" prefHeight="600.0" prefWidth="138.0">
          <children>
@@ -75,7 +75,7 @@
          <children>
             <AnchorPane layoutX="40.0" layoutY="30.0" prefHeight="170.0" prefWidth="568.0" style="-fx-background-color: #525252; -fx-background-radius: 15px;">
                <children>
-                  <ListView fx:id="SHAnnounceListView" layoutY="37.0" prefHeight="131.0" prefWidth="568.0" style="-fx-background-radius: 5px;" />
+                  <ListView fx:id="SHAnnounceListView"  layoutY="37.0" prefHeight="131.0" prefWidth="568.0" style="-fx-background-radius: 5px;" styleClass="skateAnnouncement"  />
                   <Label id="currentAnnouncements" layoutX="7.0" layoutY="5.0" text="Skate Hire Announcements" textFill="#bebebe">
                      <font>
                         <Font size="18.0" />
@@ -84,7 +84,7 @@
                </children></AnchorPane>
             <AnchorPane layoutX="40.0" layoutY="221.0" prefHeight="292.0" prefWidth="568.0" style="-fx-background-color: #525252; -fx-background-radius: 15px;">
                <children>
-                  <ListView fx:id="SHListView" layoutY="33.0" prefHeight="255.0" prefWidth="568.0" style="-fx-background-radius: 5px;" />
+                  <ListView fx:id="SHListView" layoutY="33.0" prefHeight="255.0" prefWidth="568.0" style="-fx-background-radius: 5px;" styleClass="list-cell" />
                   <Label id="currentAnnouncements" layoutX="14.0" layoutY="5.0" text="Current Availability" textFill="#bebebe">
                      <font>
                         <Font size="18.0" />

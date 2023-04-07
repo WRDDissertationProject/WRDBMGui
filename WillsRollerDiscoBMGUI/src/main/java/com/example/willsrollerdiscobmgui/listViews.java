@@ -16,6 +16,7 @@ public class listViews {
         }
     }
 
+
     public static void loadTicketsListView(ListView lv) throws SQLException {
         if (lv.getItems().isEmpty()) {
             List<String> data = DBConnect.loadTicket();
@@ -37,4 +38,9 @@ public class listViews {
         }
     }
 
+    public static void loadAnnouncementSHListView(ListView lv) throws SQLException {
+        List<String> data = DBConnect.loadAnnouncementSH();
+        ObservableList<String> items = FXCollections.observableArrayList(data);
+        lv.setItems(items);
+    }
 }

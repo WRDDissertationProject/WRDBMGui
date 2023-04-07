@@ -13,12 +13,13 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 public class HelloApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
 
-        Parent root = FXMLLoader.load(getClass().getResource("home.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("login.fxml"));
         Scene scene = new Scene(root,800,600);
 
         stage.setTitle("Wills Roller Disco Business Management Portal");
@@ -26,6 +27,7 @@ public class HelloApplication extends Application {
         scene.setFill(null);
 
         stage.setScene(scene);
+
         stage.show();
 
         stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
@@ -37,7 +39,7 @@ public class HelloApplication extends Application {
         });
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
         //Database Connection
         DBConnect connect = new DBConnect();
         connect.connect();
@@ -45,6 +47,7 @@ public class HelloApplication extends Application {
         locks locks = new locks();
         locks.connect();
 
+        DBConnect.resetLocks();
         //Launches the app
         launch();
     }
