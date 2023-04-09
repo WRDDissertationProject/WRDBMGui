@@ -90,7 +90,21 @@ public class DBConnect {
         System.out.println("Locks Reset");
     }
 
-    public void connect() {
+    public static String getSessionStartTime() {
+        String query = "SELECT current_dateTime FROM current_session";
+        try (Statement stmt = connection.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+            if (rs.next()) {
+                return rs.getString("current_dateTime");
+            } else {
+                return "Session not started";
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+        public void connect() {
         {
             try {
                 Class.forName("com.mysql.cj.jdbc.Driver");
@@ -333,13 +347,10 @@ public class DBConnect {
         return success;
     }
     public static boolean checkForSessionStart() throws SQLException {
-        boolean session = false;
-        String query = "SELECT * FROM current_session WHERE current_session_id = true";
+        String query = "SELECT * FROM current_session";
         Statement stmt = connection.createStatement();
         ResultSet rs = stmt.executeQuery(query);
-            if (rs.next()) {
-                session = true;
-            } return session;
+        return rs.next();
     }
 
     public static boolean deleteTicket(String value){

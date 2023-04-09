@@ -53,6 +53,26 @@
             <ImageView layoutX="3.0" layoutY="235.0">
                <Image url="@assets/tools-grey.png" />
             </ImageView>
+            <Button id="maintenanceButton" layoutX="7.0" layoutY="274.0" mnemonicParsing="false" onAction="#switchToSkateHireTrends" prefHeight="36.0" prefWidth="130.0" style="-fx-background-color: #2D2D2D;" styleClass="menuButton" text="Skate Hire Trends" textFill="#bebebe">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Button id="maintenanceButton" layoutX="7.0" layoutY="310.0" mnemonicParsing="false" onAction="#switchToAdmissionTrends" prefHeight="36.0" prefWidth="130.0" style="-fx-background-color: #2D2D2D;" styleClass="menuButton" text="Admission Trends" textFill="#bebebe">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Button id="maintenanceButton" layoutX="4.0" layoutY="382.0" mnemonicParsing="false" onAction="#switchToTransactionHistory" prefHeight="49.0" prefWidth="130.0" style="-fx-background-color: #2D2D2D;" styleClass="menuButton" text="Transaction History" textFill="#bebebe" wrapText="true">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Button id="maintenanceButton" layoutX="7.0" layoutY="346.0" mnemonicParsing="false" onAction="#switchToExtraSalesTrends" prefHeight="36.0" prefWidth="130.0" style="-fx-background-color: #2D2D2D;" styleClass="menuButton" text="Extra Sales Trends" textFill="#bebebe">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
          </children>
       </AnchorPane>
       <Rectangle id="menuDivider" arcHeight="5.0" arcWidth="5.0" fill="#373739" height="600.0" layoutX="138.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="6.0" />
@@ -71,7 +91,7 @@
       </AnchorPane>
       <AnchorPane id="statusBar" layoutX="158.0" layoutY="525.0" prefHeight="66.0" prefWidth="641.0" style="-fx-background-color: 2D2D2D;">
          <children>
-            <Button id="statusButton" fx:id="startSessionButton" layoutX="40.0" layoutY="15.0" mnemonicParsing="false" onAction="#startSession" style="-fx-background-radius: 15px; -fx-background-color: #48992B;" text="Start Session">
+            <Button id="startSessionButton" fx:id="startSessionButton" layoutX="40.0" layoutY="15.0" mnemonicParsing="false" onAction="#startSession" style="-fx-background-radius: 15px; -fx-background-color: #48992B;" text="Start Session">
                <font>
                   <Font size="16.0" />
                </font>
@@ -80,12 +100,12 @@
                <font>
                   <Font size="16.0" />
                </font></Label>
-            <Label id="currentStatusLabel" fx:id="currentStatusText" layoutX="435.0" layoutY="20.0" text="Stopped" textFill="#bebebe">
+            <Label id="currentStatusText" fx:id="currentStatusText" layoutX="435.0" layoutY="20.0" text="Stopped" textFill="#bebebe" wrapText="true">
                <font>
                   <Font size="16.0" />
                </font>
             </Label>
-            <Button id="statusButton" fx:id="stopSessionButton" layoutX="39.0" layoutY="15.0" mnemonicParsing="false" onAction="#stopSession" style="-fx-background-radius: 15px; -fx-background-color: #FA3837;" text="Stop Session" textFill="WHITE" visible="false">
+            <Button id="stopSessionButton" fx:id="stopSessionButton" layoutX="39.0" layoutY="15.0" mnemonicParsing="false" onAction="#stopSession" style="-fx-background-radius: 15px; -fx-background-color: #FA3837;" text="Stop Session" textFill="WHITE" visible="false">
                <font>
                   <Font size="16.0" />
                </font>
@@ -94,7 +114,39 @@
       </AnchorPane>
       <AnchorPane layoutX="141.0" layoutY="68.0" prefHeight="450.0" prefWidth="662.0">
          <children>
-            <AnchorPane layoutX="40.0" layoutY="30.0" prefHeight="387.0" prefWidth="568.0" style="-fx-background-color: #525252; -fx-background-radius: 15px;" />
+            <AnchorPane layoutX="40.0" layoutY="30.0" prefHeight="387.0" prefWidth="568.0" style="-fx-background-color: #525252; -fx-background-radius: 15px;">
+               <children>
+                  <Label id="currentStatusLabel" layoutX="14.0" layoutY="20.0" text="Most Popular Skate Size:" textFill="#bebebe">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <Label id="currentStatusLabel" layoutX="14.0" layoutY="78.0" prefHeight="26.0" prefWidth="182.0" text="Sizes that have Run Out:" textFill="#bebebe">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <Label id="currentStatusLabel" layoutX="335.0" layoutY="194.0" prefHeight="26.0" prefWidth="226.0" text="Customer Numbers Per Session" textFill="#bebebe">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <Label id="currentStatusLabel" layoutX="4.0" layoutY="318.0" prefHeight="26.0" prefWidth="238.0" text="Most Popular Customer Type:" textFill="#bebebe">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <Label id="currentStatusLabel" layoutX="362.0" layoutY="20.0" text="Most Popular Skate Size:" textFill="#bebebe">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <Label id="currentStatusLabel" layoutX="4.0" layoutY="270.0" prefHeight="26.0" prefWidth="238.0" text="Customer Average Per Session:" textFill="#bebebe">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+               </children></AnchorPane>
          </children></AnchorPane>
       <Label layoutX="500.0" layoutY="634.0" prefHeight="18.0" prefWidth="111.0" text="Text" textFill="#b9b9b900" />
    </children>

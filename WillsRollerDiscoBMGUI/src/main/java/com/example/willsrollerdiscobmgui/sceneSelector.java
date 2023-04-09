@@ -69,8 +69,32 @@ public class sceneSelector implements Initializable {
         stage.show();
 
         //check if session has started
-        //checkForSession();
+        Platform.runLater(() -> {
+
+            currentStatusText = (Label) root.lookup("#currentStatusText");
+            // Get a reference to the Button elements
+            startSessionButton = (Button) root.lookup("#startSessionButton");
+            stopSessionButton = (Button) root.lookup("#stopSessionButton");
+
+            // Check if session has started
+            try {
+                String sessionTime = DBConnect.getSessionStartTime();
+                if (sessionChecker() == true) {
+                    currentStatusText.setText("Started On" + sessionTime);
+                    System.out.println(sessionStarted);
+                    startSessionButton.setVisible(false);
+                    stopSessionButton.setVisible(true);
+                } else {
+                    currentStatusText.setText(sessionTime);
+                    stopSessionButton.setVisible(false);
+                    startSessionButton.setVisible(true);
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
+
 
     @FXML
     public void switchToAnnouncements(ActionEvent event) throws IOException, SQLException {
@@ -131,23 +155,50 @@ public class sceneSelector implements Initializable {
 
     }
 
-    public void checkForSession() throws SQLException {
-        boolean session = DBConnect.checkForSessionStart();
+    @FXML
+    public void switchToSkateHireTrends(ActionEvent event) throws IOException {
+        root = FXMLLoader.load(getClass().getResource("skateHireTrends.fxml"));
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
 
-        //set values
+    public void switchToAdmissionTrends(ActionEvent event) throws IOException {
+        root = FXMLLoader.load(getClass().getResource("admissionTrends.fxml"));
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    public void switchToExtraSalesTrends(ActionEvent event) throws IOException {
+        root = FXMLLoader.load(getClass().getResource("extraSalesTrends.fxml"));
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    public void switchToTransactionHistory(ActionEvent event) throws IOException {
+        root = FXMLLoader.load(getClass().getResource("transactionHistory.fxml"));
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    public boolean sessionChecker() throws SQLException {
+        boolean session = DBConnect.checkForSessionStart();
         if(session){
-            System.out.println(sessionStarted);
-            //this.startSessionButton.setVisible(false);
-            //System.out.println(sessionStarted);
-            //this.stopSessionButton.setVisible(true);
+            return true;
         }
-       else {
-            //currentStatusText.setText("Session Stopped");
-            //this.stopSessionButton.setVisible(false);
-            //this.startSessionButton.setVisible(true);
-            //this.startSessionButton.setVisible(true);
+        else {
+            return false;
         }
     }
+
+
 
     @FXML
     public void startSession(ActionEvent event) throws IOException {

@@ -20,7 +20,7 @@
                   <Font size="16.0" />
                </font>
             </Button>
-            <Text id="title" fill="#bebebe" layoutX="512.0" layoutY="39.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Dissertation Build V1.0" textAlignment="CENTER" wrappingWidth="252.66668701171864">
+            <Text id="title" fill="#bebebe" layoutX="512.0" layoutY="39.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Dissertation Build Sprint 2 V2.0" textAlignment="CENTER" wrappingWidth="252.66668701171864">
                <font>
                   <Font size="15.0" />
                </font>
@@ -36,8 +36,8 @@
                         <Font size="16.0" />
                      </font>
                   </Button>
-                  <TextField id="userNameInput" fx:id="userNameInput" layoutX="122.0" layoutY="51.0" prefHeight="46.0" prefWidth="216.0" style="-fx-background-color: #2D2D2D; -fx-text-fill: #bebebe;"  />
-                  <PasswordField id="passwordInput" fx:id="passwordInput" layoutX="122.0" layoutY="135.0" prefHeight="46.0" prefWidth="216.0" style="-fx-background-color: #2D2D2D; -fx-text-fill: #bebebe;"  />
+                  <TextField id="userNameInput" fx:id="userNameInput" layoutX="122.0" layoutY="51.0" prefHeight="46.0" prefWidth="216.0" style="-fx-background-color: #2D2D2D; -fx-text-fill: #bebebe;" />
+                  <PasswordField id="passwordInput" fx:id="passwordInput" layoutX="122.0" layoutY="135.0" prefHeight="46.0" prefWidth="216.0" style="-fx-background-color: #2D2D2D; -fx-text-fill: #bebebe;" />
                   <Label layoutX="33.0" layoutY="66.0" text="User Name:" textFill="WHITE" />
                   <Label layoutX="33.0" layoutY="145.0" text="Password:" textFill="WHITE" />
                </children></AnchorPane>

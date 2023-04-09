@@ -13,15 +13,11 @@
    <children>
       <AnchorPane id="menuPanel" prefHeight="600.0" prefWidth="138.0">
          <children>
-            <Button id="homeButton" layoutX="4.0" layoutY="86.0" mnemonicParsing="false" onAction="#switchToHome" prefHeight="36.0" prefWidth="130.0" style="-fx-background-color: #2D2D2D;" styleClass="menuButton" text="Home" textFill="WHITE">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Button>
             <Label id="menuLabel" layoutX="45.0" layoutY="28.0" text="Menu" textFill="#bebebe">
                <font>
                   <Font size="18.0" />
-               </font></Label>
+               </font>
+            </Label>
             <Button id="announcementsButton" layoutX="14.0" layoutY="122.0" mnemonicParsing="false" onAction="#switchToAnnouncements" prefHeight="36.0" prefWidth="130.0" style="-fx-background-color: #2D2D2D;" styleClass="menuButton" text="Announcements" textFill="#bebebe" wrapText="true" />
             <Button id="ticketsButton" layoutX="-9.0" layoutY="158.0" mnemonicParsing="false" onAction="#switchToTickets" prefHeight="36.0" prefWidth="130.0" style="-fx-background-color: #2D2D2D;" styleClass="menuButton" text="Tickets" textFill="#bebebe">
                <font>
@@ -38,22 +34,27 @@
                   <Font size="14.0" />
                </font>
             </Button>
-            <ImageView layoutX="4.0" layoutY="89.0">
-               <Image url="@assets/home-white.png" />
-            </ImageView>
             <ImageView layoutX="3.0" layoutY="124.0">
-               <Image url="@assets/announcement-grey.png" />
+               <image>
+                  <Image url="@assets/announcement-grey.png" />
+               </image>
             </ImageView>
             <ImageView layoutX="5.0" layoutY="164.0">
-               <Image url="@assets/ticket-grey.png" />
+               <image>
+                  <Image url="@assets/ticket-grey.png" />
+               </image>
             </ImageView>
             <ImageView layoutX="3.0" layoutY="198.0">
-               <Image url="@assets/skate-grey.png" />
+               <image>
+                  <Image url="@assets/skate-grey.png" />
+               </image>
             </ImageView>
             <ImageView layoutX="3.0" layoutY="235.0">
-               <Image url="@assets/tools-grey.png" />
+               <image>
+                  <Image url="@assets/tools-grey.png" />
+               </image>
             </ImageView>
-            <Button id="maintenanceButton" layoutX="7.0" layoutY="274.0" mnemonicParsing="false" onAction="#switchToSkateHireTrends" prefHeight="36.0" prefWidth="130.0" style="-fx-background-color: #2D2D2D;" styleClass="menuButton" text="Skate Hire Trends" textFill="#bebebe">
+            <Button id="maintenanceButton" layoutX="7.0" layoutY="274.0" mnemonicParsing="false" onAction="#switchToSkateHireTrends" prefHeight="36.0" prefWidth="130.0" style="-fx-background-color: #2D2D2D;" styleClass="menuButton" text="Skate Hire Trends" textFill="WHITE">
                <font>
                   <Font size="14.0" />
                </font>
@@ -73,6 +74,16 @@
                   <Font size="14.0" />
                </font>
             </Button>
+            <Button id="homeButton" layoutX="3.0" layoutY="88.0" mnemonicParsing="false" onAction="#switchToHome" prefHeight="36.0" prefWidth="130.0" style="-fx-background-color: #2D2D2D;" styleClass="menuButton" text="Home" textFill="#bebebe">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <ImageView layoutX="4.0" layoutY="91.0">
+               <image>
+                  <Image url="@assets/home-grey.png" />
+               </image>
+            </ImageView>
          </children>
       </AnchorPane>
       <Rectangle id="menuDivider" arcHeight="5.0" arcWidth="5.0" fill="#373739" height="600.0" layoutX="138.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="6.0" />
@@ -86,26 +97,13 @@
             <Text id="title" fill="#bebebe" layoutX="95.0" layoutY="39.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Wills Roller Disco">
                <font>
                   <Font size="18.0" />
-               </font></Text>
+               </font>
+            </Text>
          </children>
       </AnchorPane>
       <AnchorPane id="statusBar" layoutX="158.0" layoutY="525.0" prefHeight="66.0" prefWidth="641.0" style="-fx-background-color: 2D2D2D;">
          <children>
-            <Button id="startSessionButton" fx:id="startSessionButton" layoutX="40.0" layoutY="15.0" mnemonicParsing="false" onAction="#startSession" style="-fx-background-radius: 15px; -fx-background-color: #48992B;" text="Start Session">
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </Button>
-            <Label id="currentStatusLabel" layoutX="435.0" layoutY="1.0" text="Current Status:" textFill="#bebebe">
-               <font>
-                  <Font size="16.0" />
-               </font></Label>
-            <Label id="currentStatusText" fx:id="currentStatusText" layoutX="435.0" layoutY="20.0" text="Stopped" textFill="#bebebe" wrapText="true">
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </Label>
-            <Button id="stopSessionButton" fx:id="stopSessionButton" layoutX="39.0" layoutY="15.0" mnemonicParsing="false" onAction="#stopSession" style="-fx-background-radius: 15px; -fx-background-color: #FA3837;" text="Stop Session" textFill="WHITE" visible="false">
+            <Button id="statusButton" fx:id="stopSessionButton" layoutX="39.0" layoutY="15.0" mnemonicParsing="false" onAction="#stopSession" style="-fx-background-radius: 15px; -fx-background-color: #FA3837;" text="Stop Session" textFill="WHITE" visible="false">
                <font>
                   <Font size="16.0" />
                </font>
@@ -116,38 +114,14 @@
          <children>
             <AnchorPane layoutX="40.0" layoutY="30.0" prefHeight="387.0" prefWidth="568.0" style="-fx-background-color: #525252; -fx-background-radius: 15px;">
                <children>
-                  <Label id="currentStatusLabel" layoutX="14.0" layoutY="20.0" text="Most Popular Skate Size:" textFill="#bebebe">
+                  <Label id="menuLabel" layoutX="16.0" layoutY="11.0" text="Skate Hire Trends" textFill="#bebebe">
                      <font>
-                        <Font size="16.0" />
-                     </font>
-                  </Label>
-                  <Label id="currentStatusLabel" layoutX="14.0" layoutY="78.0" prefHeight="26.0" prefWidth="182.0" text="Sizes that have Run Out:" textFill="#bebebe">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                  </Label>
-                  <Label id="currentStatusLabel" layoutX="335.0" layoutY="194.0" prefHeight="26.0" prefWidth="226.0" text="Customer Numbers Per Session" textFill="#bebebe">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                  </Label>
-                  <Label id="currentStatusLabel" layoutX="4.0" layoutY="318.0" prefHeight="26.0" prefWidth="238.0" text="Most Popular Customer Type:" textFill="#bebebe">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                  </Label>
-                  <Label id="currentStatusLabel" layoutX="362.0" layoutY="20.0" text="Most Popular Skate Size:" textFill="#bebebe">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                  </Label>
-                  <Label id="currentStatusLabel" layoutX="4.0" layoutY="270.0" prefHeight="26.0" prefWidth="238.0" text="Customer Average Per Session:" textFill="#bebebe">
-                     <font>
-                        <Font size="16.0" />
+                        <Font size="18.0" />
                      </font>
                   </Label>
                </children></AnchorPane>
-         </children></AnchorPane>
+         </children>
+      </AnchorPane>
       <Label layoutX="500.0" layoutY="634.0" prefHeight="18.0" prefWidth="111.0" text="Text" textFill="#b9b9b900" />
    </children>
 </AnchorPane>
