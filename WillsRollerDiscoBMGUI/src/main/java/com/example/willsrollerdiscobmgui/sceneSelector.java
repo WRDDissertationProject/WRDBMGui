@@ -223,7 +223,7 @@ public class sceneSelector implements Initializable {
     }
 
     @FXML
-    public void stopSession(ActionEvent event) throws IOException {
+    public void stopSession(ActionEvent event) throws IOException, SQLException {
         sessionStarted = false;
         System.out.println(sessionStarted);
         currentStatusText.setText("Session Stopped");

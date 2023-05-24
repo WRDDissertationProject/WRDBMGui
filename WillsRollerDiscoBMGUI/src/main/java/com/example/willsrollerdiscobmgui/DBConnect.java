@@ -222,8 +222,17 @@ public class DBConnect {
     }
 
 
-    public static void moveToPreviousSessions() {
+    public static void moveToPreviousSessions() throws SQLException {
         String sessionDateTime = null;
+        int currentOwnSkaters = 0;
+        int currentHireSkaters = 0;
+        int currentSpectators = 0;
+        int currentMembershipCards = 0;
+        double currentAdmissionProfitOwnSkates = 0.00;
+        double currentAdmissionProfitHireSkates = 0.00;
+        double currentAdmissionProfitTotal = 0.00;
+        int currentExtrasSoldAmount = 0;
+        double currentExtrasSoldTotal = 0.00;
 
         //select from current session
         try {
@@ -233,38 +242,55 @@ public class DBConnect {
 
             if (rs.next()) {
                 sessionDateTime = rs.getString("current_dateTime");
+                currentOwnSkaters = rs.getInt("Current_Own_skaters");
+                currentHireSkaters = rs.getInt("Current_Hire_skaters");
+                currentSpectators = rs.getInt("Current_Spectators");
+                currentMembershipCards = rs.getInt("Current_Membership_cards_used");
+                currentAdmissionProfitOwnSkates = rs.getDouble("Current_Admission_profit_hire_skaters");
+                currentAdmissionProfitHireSkates = rs.getDouble("Current_Admission_profit_hire_skaters");
+                currentAdmissionProfitTotal = rs.getDouble("Current_Admission_profit_total");
+                currentExtrasSoldAmount = rs.getInt("Current_Extras_sold_amount");
+                currentExtrasSoldTotal = rs.getDouble("Current_Extras_sold_total");
             }
-        }
-        catch (SQLException e) {
-            System.out.print(e);
-            System.out.println("Cannot select from current table");
-            return; //exit method if there is an error
-        }
 
-        //move into the previous table
-        try {
-            PreparedStatement pstmt = connection.prepareStatement(
-                    "INSERT INTO previous_sessions(session_dateTime) VALUES (?)");
-            pstmt.setString(1, sessionDateTime);
-            pstmt.executeUpdate();
-            System.out.println("Moved to Previous Session");
-        }
-        catch (SQLException e) {
-            System.out.print(e);
-            System.out.println("Table could not be moved to Previous Session");
-            return; //exit method if there is an error
-        }
 
-        //drop current session
-        try {
-            Statement stmt = connection.createStatement();
-            String sql = "TRUNCATE TABLE current_session";
-            stmt.executeUpdate(sql);
-            System.out.println("Current Session Dropped");
-        }
-        catch (SQLException e) {
-            System.out.print(e);
-            System.out.println("Current Session Table Cannot Be Dropped");
+            //move into the previous table
+            try {
+                PreparedStatement pstmt = connection.prepareStatement(
+                        "INSERT INTO previous_sessions(session_dateTime, own_skaters, hire_skaters, spectators," +
+                                "memberships, admission_profit_own_skaters, admission_profit_hire_skaters, admission_profit_total, " +
+                                "extras_sold_amount, extras_sold_total) VALUES (?,?,?,?,?,?,?,?,?,? )");
+                pstmt.setString(1, sessionDateTime);
+                pstmt.setInt(2, currentOwnSkaters);
+                pstmt.setInt(3, currentHireSkaters);
+                pstmt.setInt(4,currentSpectators);
+                pstmt.setInt(5,currentMembershipCards);
+                pstmt.setDouble(6, currentAdmissionProfitOwnSkates);
+                pstmt.setDouble(7, currentAdmissionProfitHireSkates);
+                pstmt.setDouble(8,currentAdmissionProfitTotal);
+                pstmt.setDouble(9,currentExtrasSoldAmount);
+                pstmt.setDouble(10, currentExtrasSoldTotal);
+                pstmt.executeUpdate();
+                System.out.println("Moved to Previous Session");
+            } catch (SQLException e) {
+                System.out.print(e);
+                System.out.println("Table could not be moved to Previous Session");
+                return; //exit method if there is an error
+            }
+
+
+            //drop current session
+            try {
+                Statement stmtDrop = connection.createStatement();
+                String sql = "TRUNCATE TABLE current_session";
+                stmtDrop.executeUpdate(sql);
+                System.out.println("Current Session Dropped");
+            } catch (SQLException e) {
+                System.out.print(e);
+                System.out.println("Current Session Table Cannot Be Dropped");
+            }
+        } finally {
+
         }
     }
 
