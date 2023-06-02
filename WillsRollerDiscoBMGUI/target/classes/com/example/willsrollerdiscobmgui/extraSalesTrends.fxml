@@ -5,6 +5,7 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
@@ -101,20 +102,86 @@
             </Text>
          </children>
       </AnchorPane>
-      <AnchorPane id="statusBar" layoutX="158.0" layoutY="525.0" prefHeight="66.0" prefWidth="641.0" style="-fx-background-color: 2D2D2D;">
-         <children>
-            <Button id="statusButton" fx:id="stopSessionButton" layoutX="39.0" layoutY="15.0" mnemonicParsing="false" onAction="#stopSession" style="-fx-background-radius: 15px; -fx-background-color: #FA3837;" text="Stop Session" textFill="WHITE" visible="false">
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </Button>
-         </children>
-      </AnchorPane>
       <AnchorPane layoutX="141.0" layoutY="68.0" prefHeight="450.0" prefWidth="662.0">
          <children>
-            <AnchorPane layoutX="40.0" layoutY="30.0" prefHeight="387.0" prefWidth="568.0" style="-fx-background-color: #525252; -fx-background-radius: 15px;">
+            <AnchorPane layoutX="35.0" layoutY="30.0" prefHeight="382.0" prefWidth="554.0" style="-fx-background-color: #525252; -fx-background-radius: 15px;">
                <children>
                   <Label id="menuLabel" layoutX="10.0" layoutY="16.0" text="Extra Sales Trends" textFill="#bebebe">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <StackPane fx:id="currentExtraStackPane" layoutX="173.0" layoutY="13.0" prefHeight="224.0" prefWidth="371.0">
+                     <children>
+                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#bebebe" height="228.0" stroke="BLACK" strokeType="INSIDE" width="356.0" />
+                     </children>
+                  </StackPane>
+                  <Label id="menuLabel" layoutX="5.0" layoutY="85.0" text="Current Extra Sales:" textFill="#bebebe">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label id="menuLabel" layoutX="5.0" layoutY="137.0" prefHeight="27.0" prefWidth="96.0" text="Glowsticks:" textFill="#bebebe">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label id="glowSticksCurrentNumber" fx:id="glowSticksCurrentNumber" layoutX="101.0" layoutY="137.0" prefHeight="27.0" prefWidth="96.0" text="0" textFill="#bebebe">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label id="menuLabel" layoutX="5.0" layoutY="189.0" prefHeight="27.0" prefWidth="143.0" text="Foam GlowSticks:" textFill="#bebebe">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label id="fGlowSticksCurrentNumber" fx:id="fGlowSticksCurrentNumber" layoutX="153.0" layoutY="189.0" prefHeight="27.0" prefWidth="96.0" text="0" textFill="#bebebe">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label id="menuLabel" layoutX="5.0" layoutY="244.0" prefHeight="27.0" prefWidth="102.0" text="Skate Laces:" textFill="#bebebe">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label id="skateLacesCurrentNumber" fx:id="skateLacesCurrentNumber" layoutX="110.0" layoutY="244.0" prefHeight="27.0" prefWidth="96.0" text="0" textFill="#bebebe">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label id="menuLabel" layoutX="5.0" layoutY="326.0" prefHeight="27.0" prefWidth="111.0" text="Promotional:" textFill="#bebebe">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label id="promotionalCurrentNumber" fx:id="promotionalCurrentNumber" layoutX="110.0" layoutY="327.0" prefHeight="27.0" prefWidth="96.0" text="0" textFill="#bebebe">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label id="menuLabel" layoutX="5.0" layoutY="364.0" prefHeight="27.0" prefWidth="137.0" text="Replacements:" textFill="#bebebe">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label id="replacementCurrentNumber" fx:id="replacementCurrentNumber" layoutX="124.0" layoutY="365.0" prefHeight="27.0" prefWidth="96.0" text="0" textFill="#bebebe">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <StackPane fx:id="allTimeExtraStackPane" layoutX="173.0" layoutY="237.0" prefHeight="224.0" prefWidth="371.0">
+                     <children>
+                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#bebebe" height="228.0" stroke="BLACK" strokeType="INSIDE" width="358.0" />
+                     </children>
+                  </StackPane>
+                  <Label id="menuLabel" layoutX="5.0" layoutY="288.0" prefHeight="27.0" prefWidth="80.0" text="Seasonal:" textFill="#bebebe">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label id="seasonalCurrentNumber" fx:id="seasonalCurrentNumber" layoutX="82.0" layoutY="288.0" prefHeight="27.0" prefWidth="96.0" text="0" textFill="#bebebe">
                      <font>
                         <Font size="18.0" />
                      </font>

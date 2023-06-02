@@ -2,9 +2,11 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
@@ -112,9 +114,50 @@
       </AnchorPane>
       <AnchorPane layoutX="141.0" layoutY="68.0" prefHeight="450.0" prefWidth="662.0">
          <children>
-            <AnchorPane layoutX="40.0" layoutY="30.0" prefHeight="387.0" prefWidth="568.0" style="-fx-background-color: #525252; -fx-background-radius: 15px;">
+            <AnchorPane layoutX="40.0" layoutY="30.0" prefHeight="417.0" prefWidth="568.0" style="-fx-background-color: #525252; -fx-background-radius: 15px;">
                <children>
                   <Label id="menuLabel" layoutX="16.0" layoutY="11.0" text="Skate Hire Trends" textFill="#bebebe">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <StackPane fx:id="skateHireStackPane" layoutX="196.0" layoutY="14.0" prefHeight="224.0" prefWidth="371.0">
+                     <children>
+                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#bebebe" height="228.0" stroke="BLACK" strokeType="INSIDE" width="358.0" />
+                     </children>
+                  </StackPane>
+                  <ListView id="SHTListView" fx:id="SHTListView" layoutX="203.0" layoutY="289.0" onMouseClicked="#selectSHT" prefHeight="115.0" prefWidth="351.0" styleClass="list-cell" />
+                  <Label id="menuLabel" layoutX="203.0" layoutY="261.0" text="Skates Missing" textFill="#bebebe">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label id="menuLabel" layoutX="14.0" layoutY="53.0" prefHeight="74.0" prefWidth="170.0" text="Most Popular Skate Size:" textFill="#bebebe" wrapText="true">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label id="menuLabel" layoutX="14.0" layoutY="166.0" prefHeight="74.0" prefWidth="170.0" text="Least Popular Skate Size:" textFill="#bebebe" wrapText="true">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label id="menuLabel" layoutX="14.0" layoutY="275.0" prefHeight="74.0" prefWidth="170.0" text="Skate Pairs in Maintenance:" textFill="#bebebe" wrapText="true">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label id="mostPopularSkateSize" fx:id="mostPopularSkateSize" layoutX="14.0" layoutY="124.0" prefHeight="24.0" prefWidth="170.0" text="0" textFill="#bebebe" wrapText="true">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label id="leastPopularSkateSize" fx:id="leastPopularSkateSize" layoutX="14.0" layoutY="237.0" prefHeight="24.0" prefWidth="170.0" text="0" textFill="#bebebe" wrapText="true">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label id="skatesInMaintenance" fx:id="skatesInMaintenance" layoutX="14.0" layoutY="349.0" prefHeight="24.0" prefWidth="170.0" text="0" textFill="#bebebe" wrapText="true">
                      <font>
                         <Font size="18.0" />
                      </font>

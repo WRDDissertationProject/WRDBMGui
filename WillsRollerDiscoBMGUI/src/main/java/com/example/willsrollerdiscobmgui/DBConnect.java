@@ -104,7 +104,7 @@ public class DBConnect {
         }
     }
 
-        public void connect() {
+    public void connect() {
         {
             try {
                 Class.forName("com.mysql.cj.jdbc.Driver");
@@ -181,8 +181,8 @@ public class DBConnect {
             String postedBy = resultSet.getString("staff_id");
 
             ticketsList.add("Ticket Details: " + ticket
-            + "\nDate and Time Posted: " + ticketDate + " " +  ticketTime
-            + "\nPosted By: " + postedBy);
+                    + "\nDate and Time Posted: " + ticketDate + " " + ticketTime
+                    + "\nPosted By: " + postedBy);
         }
         return ticketsList;
     }
@@ -197,11 +197,11 @@ public class DBConnect {
             String type = resultSet.getString("maintenance_type");
             String skateSize = resultSet.getString("skateSize");
 
-            if((skateSize == null) || (skateSize.equals("null"))){
+            if ((skateSize == null) || (skateSize.equals("null"))) {
                 skateSize = "N/A";
             }
             maintenanceList.add(
-                    "Details: " + record + "\nType: " + type + "\nSkate Size: " +skateSize);
+                    "Details: " + record + "\nType: " + type + "\nSkate Size: " + skateSize);
         }
         return maintenanceList;
     }
@@ -263,12 +263,12 @@ public class DBConnect {
                 pstmt.setString(1, sessionDateTime);
                 pstmt.setInt(2, currentOwnSkaters);
                 pstmt.setInt(3, currentHireSkaters);
-                pstmt.setInt(4,currentSpectators);
-                pstmt.setInt(5,currentMembershipCards);
+                pstmt.setInt(4, currentSpectators);
+                pstmt.setInt(5, currentMembershipCards);
                 pstmt.setDouble(6, currentAdmissionProfitOwnSkates);
                 pstmt.setDouble(7, currentAdmissionProfitHireSkates);
-                pstmt.setDouble(8,currentAdmissionProfitTotal);
-                pstmt.setDouble(9,currentExtrasSoldAmount);
+                pstmt.setDouble(8, currentAdmissionProfitTotal);
+                pstmt.setDouble(9, currentExtrasSoldAmount);
                 pstmt.setDouble(10, currentExtrasSoldTotal);
                 pstmt.executeUpdate();
                 System.out.println("Moved to Previous Session");
@@ -277,7 +277,6 @@ public class DBConnect {
                 System.out.println("Table could not be moved to Previous Session");
                 return; //exit method if there is an error
             }
-
 
             //drop current session
             try {
@@ -293,6 +292,103 @@ public class DBConnect {
 
         }
     }
+
+    public static void moveSkatesToPrevious() throws SQLException {
+        String sessionDateTime = getSessionStartTime();
+
+// Fetch all records from current_skates_analytics
+        String selectQuery = "SELECT skateSize, skateAmount FROM current_skates_analytics";
+        Statement selectStmt = connection.createStatement();
+        ResultSet selectRs = selectStmt.executeQuery(selectQuery);
+
+// Iterate over the records and insert them into previous_skate_log
+        while (selectRs.next()) {
+            String skateSize = selectRs.getString("skateSize");
+            int skateAmount = selectRs.getInt("skateAmount");
+
+            String column;
+            // Determine the appropriate column to update based on skateSize
+            switch (skateSize) {
+                case "1":
+                    column = "size1";
+                    break;
+                case "2":
+                    column = "size2";
+                    break;
+                case "3":
+                    column = "size3";
+                    break;
+                case "4":
+                    column = "size4";
+                    break;
+                case "5":
+                    column = "size5";
+                    break;
+                case "6":
+                    column = "size6";
+                    break;
+                case "7":
+                    column = "size7";
+                    break;
+                case "8":
+                    column = "size8";
+                    break;
+                case "9":
+                    column = "size9";
+                    break;
+                case "10":
+                    column = "size10";
+                    break;
+                case "11":
+                    column = "size11";
+                    break;
+                case "12":
+                    column = "size12";
+                    break;
+                case "C11":
+                    column = "sizeC11";
+                    break;
+                case "C12":
+                    column = "sizeC12";
+                    break;
+                case "C13":
+                    column = "sizeC13";
+                    break;
+                default:
+                    throw new IllegalArgumentException("Invalid skate size: " + skateSize);
+            }
+
+            // Check if a row exists for the sessionDateTime in previous_skate_log
+            String checkQuery = "SELECT sessionDateTime FROM previous_skate_log WHERE sessionDateTime = ?";
+            PreparedStatement checkStmt = connection.prepareStatement(checkQuery);
+            checkStmt.setString(1, sessionDateTime);
+            ResultSet checkRs = checkStmt.executeQuery();
+
+            if (checkRs.next()) {
+                // Update the value in previous_skate_log
+                String updateQuery = "UPDATE previous_skate_log SET `" + column + "` = ? WHERE sessionDateTime = ?";
+                PreparedStatement updateStmt = connection.prepareStatement(updateQuery);
+                updateStmt.setInt(1, skateAmount);
+                updateStmt.setString(2, sessionDateTime);
+                updateStmt.executeUpdate();
+            } else {
+                // Insert a new row in previous_skate_log
+                String insertQuery = "INSERT INTO previous_skate_log (sessionDateTime, `" + column + "`) VALUES (?, ?)";
+                PreparedStatement insertStmt = connection.prepareStatement(insertQuery);
+                insertStmt.setString(1, sessionDateTime);
+                insertStmt.setInt(2, skateAmount);
+                insertStmt.executeUpdate();
+            }
+        }
+
+// Reset the skate amount in current_skates_analytics
+        String resetQuery = "UPDATE current_skates_analytics SET skateAmount = 0";
+        Statement resetStmt = connection.createStatement();
+        resetStmt.executeUpdate(resetQuery);
+
+        System.out.println("Transferred Skate Analytics to Previous Log");
+    }
+
 
     public static int fetchSkateSizeAmount(String skateSize) {
         int value = 0;
@@ -372,6 +468,7 @@ public class DBConnect {
         }
         return success;
     }
+
     public static boolean checkForSessionStart() throws SQLException {
         String query = "SELECT * FROM current_session";
         Statement stmt = connection.createStatement();
@@ -379,15 +476,14 @@ public class DBConnect {
         return rs.next();
     }
 
-    public static boolean deleteTicket(String value){
+    public static boolean deleteTicket(String value) {
         boolean success;
         try {
             Statement stmt = connection.createStatement();
             String query = "DELETE FROM tickets WHERE ticket_details = '" + value + "'";
             stmt.executeUpdate(query);
             success = true;
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             System.out.println(e);
             System.out.println("Ticket not Deleted");
             success = false;
@@ -402,11 +498,10 @@ public class DBConnect {
             String query = "DELETE FROM announcements WHERE announcement_details = '" + value + "'";
             stmt.executeUpdate(query);
             success = true;
-        }
-        catch (SQLException e) {
-        System.out.println(e);
-        System.out.println("Announcement not Deleted");
-        success = false;
+        } catch (SQLException e) {
+            System.out.println(e);
+            System.out.println("Announcement not Deleted");
+            success = false;
         }
         return success;
     }
@@ -428,8 +523,7 @@ public class DBConnect {
                 DBConnect.updateSkateSizeAmount(skateSizeIn, newAmount);
                 DBConnect.updateSkateInventory(skateSizeIn, newInventoryAmount);
             }
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             System.out.println(e);
             System.out.println("Maintenance not Deleted");
             success = false;
@@ -447,8 +541,7 @@ public class DBConnect {
         if (rs.next()) {
             loggedIn = true;
             System.out.print("Logged In");
-        }
-        else {
+        } else {
             loggedIn = false;
             System.out.print("Not Logged In");
         }
@@ -473,5 +566,165 @@ public class DBConnect {
         return skateSize;
     }
 
-}
+    public static List<String> loadTransactionHistory() throws SQLException {
+        Statement stmt = connection.createStatement();
+        ResultSet resultSet = stmt.executeQuery("SELECT * FROM transaction_history ORDER BY transaction_time DESC");
+        List<String> transactionList = new ArrayList<>();
 
+        while (resultSet.next()) {
+            String sessionDateTime = resultSet.getString("session_dateTime");
+            String type = resultSet.getString("transaction_type");
+            String time = resultSet.getString("transaction_time");
+            Double value = resultSet.getDouble("transaction_value");
+
+            String formattedValue = String.format("%.2f", value);
+
+            transactionList.add("Type: " + type + "\nValue: £" + formattedValue + "\nPurchase Time: " + time + " Session: " +
+                    sessionDateTime);
+        }
+        return transactionList;
+    }
+
+    public static int findExtrasCurrent(String dateTime, String type) throws SQLException {
+        int count = 0;
+        PreparedStatement stmt = connection.prepareStatement("SELECT COUNT(transaction_type) AS count " +
+                "FROM transaction_history WHERE session_dateTime = ? AND transaction_type = ?");
+
+        stmt.setString(1, dateTime);
+        stmt.setString(2, type);
+
+        ResultSet resultSet = stmt.executeQuery();
+
+        if (resultSet.next()) {
+            count = resultSet.getInt("count");
+        }
+
+        return count;
+    }
+
+    public static int findExtrasAllTime(String type) throws SQLException {
+        int count = 0;
+        PreparedStatement stmt = connection.prepareStatement("SELECT COUNT(transaction_type) AS count " +
+                "FROM transaction_history WHERE transaction_type = ?");
+
+        stmt.setString(1, type);
+
+        ResultSet resultSet = stmt.executeQuery();
+
+        if (resultSet.next()) {
+            count = resultSet.getInt("count");
+        }
+
+        return count;
+    }
+
+    public static int findMembers() throws SQLException {
+        int count = 0;
+        PreparedStatement stmt = connection.prepareStatement("SELECT Current_Membership_cards_used  " +
+                "FROM current_session");
+
+        ResultSet resultSet = stmt.executeQuery();
+
+        if (resultSet.next()) {
+            count = resultSet.getInt("Current_Membership_cards_used");
+        }
+
+        return count;
+    }
+
+    public static int calculateAverages(String type) throws SQLException {
+        double result = 0.0;
+
+        PreparedStatement stmt = connection.prepareStatement("SELECT AVG(" + type + ") AS average FROM previous_sessions");
+        ResultSet resultSet = stmt.executeQuery();
+
+        if (resultSet.next()) {
+            result = resultSet.getDouble("average");
+        }
+
+        int rounded = (int) Math.round(result);
+        return rounded;
+    }
+
+    public static int findSkateSizeAllTime(String sizeType) throws SQLException {
+        int totalCount = 0;
+
+        String sql = "SELECT " + sizeType + " FROM previous_skate_log";
+
+        PreparedStatement stmt = connection.prepareStatement(sql);
+
+        ResultSet resultSet = stmt.executeQuery();
+
+        while (resultSet.next()) {
+            int count = resultSet.getInt(sizeType);
+            totalCount += count;
+        }
+
+        return totalCount;
+    }
+
+    public static String MostPopularSize() throws SQLException {
+        String mostPopularSize = "";
+        int max = Integer.MIN_VALUE;
+
+        String[] columns = {"size1", "size2", "size3", "size4", "size5", "size6", "size7", "size8", "size9",
+                "size10", "size11", "size12", "sizeC11", "sizeC12", "sizeC13"};
+
+        for (String sizeColumn : columns) {
+            int count = DBConnect.findSkateSizeAllTime(sizeColumn);
+            if (count > max) {
+                max = count;
+                mostPopularSize = sizeColumn;
+            }
+        }
+
+        return mostPopularSize;
+    }
+
+    public static String LeastPopularSize() throws SQLException {
+        String leastPopularSize = "";
+        int min = Integer.MAX_VALUE;
+
+        String[] columns = {"size1", "size2", "size3", "size4", "size5", "size6", "size7", "size8", "size9",
+                "size10", "size11", "size12", "sizeC11", "sizeC12", "sizeC13"};
+
+        for (String sizeColumn : columns) {
+            int count = DBConnect.findSkateSizeAllTime(sizeColumn);
+            if (count < min) {
+                min = count;
+                leastPopularSize = sizeColumn;
+            }
+        }
+
+        return leastPopularSize;
+    }
+
+    public static String countSkatesInMaintenance() throws SQLException {
+        int count = 0;
+        String sql = "SELECT COUNT(*) AS count FROM maintenance WHERE maintenance_type = 'Skate Hire' AND resolved = 'N'";
+
+        PreparedStatement stmt = connection.prepareStatement(sql);
+
+        ResultSet resultSet = stmt.executeQuery();
+
+        if (resultSet.next()) {
+            count = resultSet.getInt("count");
+        }
+
+        String amountStr = String.valueOf(count);
+        return amountStr;
+    }
+
+    public static List<String> loadNeededSkates() throws SQLException {
+        Statement stmt = connection.createStatement();
+        ResultSet resultSet = stmt.executeQuery("SELECT skateSize, dateNeeded FROM needed_skates");
+        List<String> neededList = new ArrayList<>();
+
+        while (resultSet.next()) {
+            String skateSize = resultSet.getString("skateSize");
+            String dateNeeded = resultSet.getString("dateNeeded");
+            neededList.add("Size: " + skateSize + " Date Needed: " + dateNeeded);
+        }
+        return neededList;
+    }
+}

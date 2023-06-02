@@ -43,4 +43,18 @@ public class listViews {
         ObservableList<String> items = FXCollections.observableArrayList(data);
         lv.setItems(items);
     }
+
+    public static void loadTransactionHistoryListView(ListView lv) throws SQLException {
+        if (lv.getItems().isEmpty()) {
+            List<String> data = DBConnect.loadTransactionHistory();
+            ObservableList<String> items = FXCollections.observableArrayList(data);
+            lv.setItems(items);
+        };
+    }
+
+    public static void loadNeededSkates(ListView lv) throws SQLException {
+        List<String> data = DBConnect.loadNeededSkates();
+        ObservableList<String> items = FXCollections.observableArrayList(data);
+        lv.setItems(items);
+    }
 }
