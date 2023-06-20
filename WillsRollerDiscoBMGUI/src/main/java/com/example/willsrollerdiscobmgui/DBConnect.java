@@ -1,13 +1,32 @@
+/** WILLS ROLLER DISCO - DISSERTATION PROJECT
+ *  AUTHOR : EMILY FLETCHER
+ *  STUDENT NUMBER: 18410839
+ *  APPLICATION: WillsRollerDiscoBM
+ *  FILE TITLE: DBConnect.java
+ *  APPLICATION VERSION: 2.0
+ *  DATE OF WRITING: 20/06/2023
+ *
+ *  PURPOSE:
+ *    all methods that connect or interact with the database within the application, methods within this method are
+ *    all called by outside methods, often the sceneSelector.
+ *   */
+
+//PACKAGES
 package com.example.willsrollerdiscobmgui;
 
+//IMPORTS
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class DBConnect {
+
+    private static final Logger log = Logger.getLogger(String.valueOf(DBConnect.class));
+
     String url = "jdbc:mysql://localhost:3306/wrdDatabase";
     String username = "root";
     String password = "root";
@@ -54,8 +73,7 @@ public class DBConnect {
                 DBConnect.updateSkateInventory(skateSizeIn, newInventoryAmount);
             }
         } catch (SQLException e) {
-            System.out.println(e);
-            System.out.println("Announcement not inserted");
+            log.log(Level.SEVERE,"Error Within Insert Maintenance", e);
         }
     }
 
@@ -66,8 +84,7 @@ public class DBConnect {
             stmt.setString(2, skateSize);
             stmt.executeUpdate();
         } catch (SQLException e) {
-            System.out.println(e);
-            System.out.println("Current skate amount not updated");
+            log.log(Level.SEVERE,"Error Within Update Skate Size", e);
         }
     }
 
@@ -78,12 +95,10 @@ public class DBConnect {
             stmt.setString(2, skateSize);
             stmt.executeUpdate();
         } catch (SQLException e) {
-            System.out.println(e);
-            System.out.println("Skate inventory not updated");
+            log.log(Level.SEVERE,"Error Within Update Skate Inventory", e);
         }
 
     }
-
     public static void resetLocks() throws SQLException {
         PreparedStatement stmt = connection.prepareStatement("UPDATE locks SET lockedBy = null, lockTime = null");
         stmt.executeUpdate();
@@ -115,7 +130,6 @@ public class DBConnect {
                 connection = DriverManager.getConnection(url, username, password);
             } catch (SQLException e) {
                 System.out.println("Run Time Exception (Connection)");
-                ;
             }
             try {
                 Statement statement = connection.createStatement();
@@ -128,7 +142,7 @@ public class DBConnect {
 
     public static boolean insertAnnouncement(String text) {
         //insert into query
-        boolean success = false;
+        boolean success;
         try {
             Statement stmt = connection.createStatement();
             String sql = "INSERT INTO announcements(announcement_details) VALUES('" + text + "')";
@@ -137,8 +151,7 @@ public class DBConnect {
             success = true;
 
         } catch (SQLException e) {
-            System.out.println(e);
-            System.out.println("Announcement not inserted");
+            log.log(Level.SEVERE,"Error within Insert Announcement", e);
             success = false;
         }
         return success;
@@ -206,21 +219,16 @@ public class DBConnect {
         return maintenanceList;
     }
 
-
-    public static void insertCurrentSession(String fullDate, String date, String time) {
-
+    public static void insertCurrentSession(String fullDate) {
         try {
             Statement stmt = connection.createStatement();
             String sql = "INSERT INTO current_session(current_dateTime) VALUES('" + fullDate + "')";
             stmt.executeUpdate(sql);
             System.out.println("Inserted Into Database");
-
         } catch (SQLException e) {
-            System.out.println(e);
-            System.out.println("Current Session not inserted");
+            log.log(Level.SEVERE,"Error Within Current Session Insertion", e);
         }
     }
-
 
     public static void moveToPreviousSessions() throws SQLException {
         String sessionDateTime = null;
@@ -252,8 +260,6 @@ public class DBConnect {
                 currentExtrasSoldAmount = rs.getInt("Current_Extras_sold_amount");
                 currentExtrasSoldTotal = rs.getDouble("Current_Extras_sold_total");
             }
-
-
             //move into the previous table
             try {
                 PreparedStatement pstmt = connection.prepareStatement(
@@ -273,11 +279,9 @@ public class DBConnect {
                 pstmt.executeUpdate();
                 System.out.println("Moved to Previous Session");
             } catch (SQLException e) {
-                System.out.print(e);
-                System.out.println("Table could not be moved to Previous Session");
-                return; //exit method if there is an error
+                log.log(Level.SEVERE,"Table could not be moved to previous session", e);
+                return;
             }
-
             //drop current session
             try {
                 Statement stmtDrop = connection.createStatement();
@@ -285,78 +289,45 @@ public class DBConnect {
                 stmtDrop.executeUpdate(sql);
                 System.out.println("Current Session Dropped");
             } catch (SQLException e) {
-                System.out.print(e);
-                System.out.println("Current Session Table Cannot Be Dropped");
+                log.log(Level.SEVERE,"Current Session Table Could Not Be Dropped", e);
             }
         } finally {
-
+            log.log(Level.SEVERE,"Finally Reached");
         }
     }
 
     public static void moveSkatesToPrevious() throws SQLException {
         String sessionDateTime = getSessionStartTime();
 
-// Fetch all records from current_skates_analytics
+        // Fetch all records from current_skates_analytics
         String selectQuery = "SELECT skateSize, skateAmount FROM current_skates_analytics";
         Statement selectStmt = connection.createStatement();
         ResultSet selectRs = selectStmt.executeQuery(selectQuery);
 
-// Iterate over the records and insert them into previous_skate_log
+        // Iterate over the records and insert them into previous_skate_log
         while (selectRs.next()) {
             String skateSize = selectRs.getString("skateSize");
             int skateAmount = selectRs.getInt("skateAmount");
 
-            String column;
+            String column = switch (skateSize) {
+                case "1" -> "size1";
+                case "2" -> "size2";
+                case "3" -> "size3";
+                case "4" -> "size4";
+                case "5" -> "size5";
+                case "6" -> "size6";
+                case "7" -> "size7";
+                case "8" -> "size8";
+                case "9" -> "size9";
+                case "10" -> "size10";
+                case "11" -> "size11";
+                case "12" -> "size12";
+                case "C11" -> "sizeC11";
+                case "C12" -> "sizeC12";
+                case "C13" -> "sizeC13";
+                default -> throw new IllegalArgumentException("Invalid skate size: " + skateSize);
+            };
             // Determine the appropriate column to update based on skateSize
-            switch (skateSize) {
-                case "1":
-                    column = "size1";
-                    break;
-                case "2":
-                    column = "size2";
-                    break;
-                case "3":
-                    column = "size3";
-                    break;
-                case "4":
-                    column = "size4";
-                    break;
-                case "5":
-                    column = "size5";
-                    break;
-                case "6":
-                    column = "size6";
-                    break;
-                case "7":
-                    column = "size7";
-                    break;
-                case "8":
-                    column = "size8";
-                    break;
-                case "9":
-                    column = "size9";
-                    break;
-                case "10":
-                    column = "size10";
-                    break;
-                case "11":
-                    column = "size11";
-                    break;
-                case "12":
-                    column = "size12";
-                    break;
-                case "C11":
-                    column = "sizeC11";
-                    break;
-                case "C12":
-                    column = "sizeC12";
-                    break;
-                case "C13":
-                    column = "sizeC13";
-                    break;
-                default:
-                    throw new IllegalArgumentException("Invalid skate size: " + skateSize);
-            }
 
             // Check if a row exists for the sessionDateTime in previous_skate_log
             String checkQuery = "SELECT sessionDateTime FROM previous_skate_log WHERE sessionDateTime = ?";
@@ -381,14 +352,13 @@ public class DBConnect {
             }
         }
 
-// Reset the skate amount in current_skates_analytics
+        // Reset the skate amount in current_skates_analytics
         String resetQuery = "UPDATE current_skates_analytics SET skateAmount = 0";
         Statement resetStmt = connection.createStatement();
         resetStmt.executeUpdate(resetQuery);
 
         System.out.println("Transferred Skate Analytics to Previous Log");
     }
-
 
     public static int fetchSkateSizeAmount(String skateSize) {
         int value = 0;
@@ -435,14 +405,13 @@ public class DBConnect {
             System.out.println("Inserted Skate Size Into Current Database");
 
         } catch (SQLException e) {
-            System.out.println(e);
-            System.out.println("Current Skate Size not inserted to Current Database");
+            log.log(Level.SEVERE,"Current Skate Size not inserted to Current Database", e);
         }
     }
 
     public static boolean insertTicket(String text) {
         //insert into query
-        boolean success = false;
+        boolean success;
         String ticketDate = dateTime.justDate();
         String ticketTime = dateTime.justTime();
         String postedBy = "Business Management Portal";
@@ -462,8 +431,7 @@ public class DBConnect {
             success = true;
 
         } catch (SQLException e) {
-            System.out.println(e);
-            System.out.println("Announcement not inserted");
+            log.log(Level.SEVERE,"Ticket Could Not be Inserted", e);
             success = false;
         }
         return success;
@@ -484,14 +452,13 @@ public class DBConnect {
             stmt.executeUpdate(query);
             success = true;
         } catch (SQLException e) {
-            System.out.println(e);
-            System.out.println("Ticket not Deleted");
+            log.log(Level.SEVERE,"Ticket could not be deleted", e);
             success = false;
         }
         return success;
     }
 
-    public static boolean deleteAnnouncement(String value) throws SQLException {
+    public static boolean deleteAnnouncement(String value) {
         boolean success;
         try {
             Statement stmt = connection.createStatement();
@@ -499,14 +466,13 @@ public class DBConnect {
             stmt.executeUpdate(query);
             success = true;
         } catch (SQLException e) {
-            System.out.println(e);
-            System.out.println("Announcement not Deleted");
+            log.log(Level.SEVERE,"Announcement Was Not Deleted", e);
             success = false;
         }
         return success;
     }
 
-    public static boolean deleteMaintenance(String value, String skateSizeIn) throws SQLException {
+    public static boolean deleteMaintenance(String value, String skateSizeIn){
         boolean success;
         try {
             Statement stmt = connection.createStatement();
@@ -524,15 +490,14 @@ public class DBConnect {
                 DBConnect.updateSkateInventory(skateSizeIn, newInventoryAmount);
             }
         } catch (SQLException e) {
-            System.out.println(e);
-            System.out.println("Maintenance not Deleted");
+            log.log(Level.SEVERE,"Maintenance Record Could Not Be Deleted", e);
             success = false;
         }
         return success;
     }
 
     public static boolean checkLogin(String username, String password) throws SQLException {
-        boolean loggedIn = false;
+        boolean loggedIn;
         String query = "SELECT * FROM login WHERE username=? AND password=?";
         PreparedStatement stmt = connection.prepareStatement(query);
         stmt.setString(1, username);
@@ -641,9 +606,7 @@ public class DBConnect {
         if (resultSet.next()) {
             result = resultSet.getDouble("average");
         }
-
-        int rounded = (int) Math.round(result);
-        return rounded;
+        return (int) Math.round(result);
     }
 
     public static int findSkateSizeAllTime(String sizeType) throws SQLException {
@@ -711,8 +674,7 @@ public class DBConnect {
             count = resultSet.getInt("count");
         }
 
-        String amountStr = String.valueOf(count);
-        return amountStr;
+        return String.valueOf(count);
     }
 
     public static List<String> loadNeededSkates() throws SQLException {
@@ -749,16 +711,12 @@ public class DBConnect {
         }
 
         if (mostPopularType != null) {
-            switch (mostPopularType) {
-                case "own_skaters":
-                    return "Own Skaters";
-                case "hire_skaters":
-                    return "Hire Skaters";
-                case "spectators":
-                    return "Spectators";
-                default:
-                    return "Unknown";
-            }
+            return switch (mostPopularType) {
+                case "own_skaters" -> "Own Skaters";
+                case "hire_skaters" -> "Hire Skaters";
+                case "spectators" -> "Spectators";
+                default -> "Unknown";
+            };
         } else {
             return "Not Enough Data";
         }

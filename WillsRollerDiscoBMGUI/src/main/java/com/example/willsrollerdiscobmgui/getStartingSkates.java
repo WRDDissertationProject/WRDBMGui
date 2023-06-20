@@ -1,3 +1,17 @@
+/** WILLS ROLLER DISCO - DISSERTATION PROJECT
+ *  AUTHOR : EMILY FLETCHER
+ *  STUDENT NUMBER: 18410839
+ *  APPLICATION: WillsRollerDiscoBM
+ *  FILE TITLE: getStartingSkates.java
+ *  APPLICATION VERSION: 2.0
+ *  DATE OF WRITING: 20/06/2023
+ *
+ *  PURPOSE:
+ *    Method used to get the starting skate values from the database and then set them into the current skates,
+ *    needed to ensure skate hire numbers are accurate when a session is restarted.
+ *   */
+
+//PACKAGES
 package com.example.willsrollerdiscobmgui;
 
 public class getStartingSkates {
@@ -20,7 +34,6 @@ public class getStartingSkates {
         int size11CHMax = DBConnect.fetchSkateSizeAmount("C11");
         int size12CHMax = DBConnect.fetchSkateSizeAmount("C12");
         int size13CHMax = DBConnect.fetchSkateSizeAmount("C12");
-
 
         DBConnect.insertIntoCurrentSkates("1",size1Max);
         DBConnect.insertIntoCurrentSkates("2",size2Max);

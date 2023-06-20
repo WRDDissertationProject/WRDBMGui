@@ -1,42 +1,41 @@
+/** WILLS ROLLER DISCO - DISSERTATION PROJECT
+ *  AUTHOR : EMILY FLETCHER
+ *  STUDENT NUMBER: 18410839
+ *  APPLICATION: WillsRollerDiscoBM
+ *  FILE TITLE: errors.java
+ *  APPLICATION VERSION: 2.0
+ *  DATE OF WRITING: 20/06/2023
+ *
+ *  PURPOSE:
+ *    methods used to show errors and messages to the user, they are used to make the application more user-friendly.
+ *   */
+
+//PACKAGES
 package com.example.willsrollerdiscobmgui;
 
+//IMPORTS
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 
 public class errors {
 
     public static Alert alertEmptyBox() {
-        Alert emptyField = new Alert(Alert.AlertType.ERROR, "Text Field Cannot Be Empty", ButtonType.OK);
-        return emptyField;
-    }
-
-    public static Alert deleteComplete() {
-        Alert deleteComplete = new Alert(Alert.AlertType.INFORMATION,"Record Successfully Deleted", ButtonType.CLOSE);
-        return deleteComplete;
+        return new Alert(Alert.AlertType.ERROR, "Text Field Cannot Be Empty", ButtonType.OK);
     }
 
     public static Alert deleteNotComplete() {
-        Alert deleteNotComplete = new Alert(Alert.AlertType.ERROR, "Error: Record Could Not be Completed", ButtonType.OK);
-        return deleteNotComplete;
+        return new Alert(Alert.AlertType.ERROR, "Error: Record Could Not be Completed", ButtonType.OK);
     }
 
     public static Alert emptyLogin(){
-        Alert emptyLogin = new Alert(Alert.AlertType.ERROR, "Error: Username or Password cannot be empty", ButtonType.OK);
-        return emptyLogin;
-    }
-
-    public static Alert emptyLoginBoth(){
-        Alert emptyLogin = new Alert(Alert.AlertType.ERROR, "Error: Username and Password cannot be empty", ButtonType.OK);
-        return emptyLogin;
+        return new Alert(Alert.AlertType.ERROR, "Error: Username or Password cannot be empty", ButtonType.OK);
     }
 
     public static Alert loginFailure() {
-        Alert loginFailure = new Alert(Alert.AlertType.ERROR, "Error: Login data not found, please check your credentials and try again", ButtonType.OK);
-        return loginFailure;
+        return new Alert(Alert.AlertType.ERROR, "Error: Login data not found, please check your credentials and try again", ButtonType.OK);
     }
 
     public static Alert maintenanceEmpty() {
-        Alert maintenanceEmpty = new Alert(Alert.AlertType.INFORMATION, "Error: You have empty mandatory fields, please check and try again", ButtonType.OK);
-        return maintenanceEmpty;
+        return new Alert(Alert.AlertType.INFORMATION, "Error: You have empty mandatory fields, please check and try again", ButtonType.OK);
     }
 }

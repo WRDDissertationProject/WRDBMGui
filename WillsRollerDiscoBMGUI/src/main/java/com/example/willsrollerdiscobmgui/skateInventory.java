@@ -1,3 +1,16 @@
+/** WILLS ROLLER DISCO - DISSERTATION PROJECT
+ *  AUTHOR : EMILY FLETCHER
+ *  STUDENT NUMBER: 18410839
+ *  APPLICATION: WillsRollerDiscoBM
+ *  FILE TITLE: skateInventory.java
+ *  APPLICATION VERSION: 2.0
+ *  DATE OF WRITING: 20/06/2023
+ *
+ *  PURPOSE:
+ *   Setters for skate objects. Used for setting values, combines with getStartingSkates and Skate
+ *   */
+
+//PACKAGE
 package com.example.willsrollerdiscobmgui;
 
 public class skateInventory {
@@ -7,22 +20,6 @@ public class skateInventory {
     public skateInventory(String skateSizeInventory, Integer skateAmountInventory) {
         this.skateSizeInventory = skateSizeInventory;
         this.skateAmountInventory = skateAmountInventory;
-    }
-
-    public String getSkateSizeInventory() {
-        return this.skateSizeInventory;
-    }
-
-    public Integer getSkateAmountInventory() {
-        return this.skateAmountInventory;
-    }
-
-    public void setSkateSizeInventory(String skateSize) {
-        this.skateSizeInventory = skateSize;
-    }
-
-    public void setSkateAmountInventory(Integer skateAmount) {
-        this.skateAmountInventory = skateAmount;
     }
 }
 

@@ -1,14 +1,27 @@
+/** WILLS ROLLER DISCO - DISSERTATION PROJECT
+ *  AUTHOR : EMILY FLETCHER
+ *  STUDENT NUMBER: 18410839
+ *  APPLICATION: WillsRollerDiscoBM
+ *  FILE TITLE: locks.java
+ *  APPLICATION VERSION: 2.0
+ *  DATE OF WRITING: 20/06/2023
+ *
+ *  PURPOSE:
+ *   Methods to prevent concurrency issues, used to restrict access to the database when another application is midway
+ *   through a transaction.
+ *   */
+
+//PACKAGE
 package com.example.willsrollerdiscobmgui;
 
+//IMPORTS
 import java.sql.*;
 
 public class locks {
     String url = "jdbc:mysql://localhost:3306/wrdDatabase";
     String username = "root";
     String password = "root";
-
     static Connection connection = null;
-
     static ResultSet rs;
 
     public void connect() {
@@ -22,7 +35,6 @@ public class locks {
                 connection = DriverManager.getConnection(url, username, password);
             } catch (SQLException e) {
                 System.out.println("Run Time Exception (Connection)");
-                ;
             }
             try {
                 Statement statement = connection.createStatement();
@@ -53,8 +65,6 @@ public class locks {
         PreparedStatement statement = connection.prepareStatement(query);
         statement.setString(1, resourceName);
         statement.setString(2, lockedBy);
-
-        int rowsUpdated = statement.executeUpdate();
-
+        statement.executeUpdate();
     }
 }
