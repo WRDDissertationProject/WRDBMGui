@@ -103,6 +103,8 @@ public class sceneSelector implements Initializable {
                 throw new RuntimeException(e);
             }
         });
+
+        homeReloader();
     }
 
 
@@ -960,7 +962,6 @@ public class sceneSelector implements Initializable {
                 new PieChart.Data("Size C11", sizeC11),
                 new PieChart.Data("Size C12", sizeC12),
                 new PieChart.Data("Size C13", sizeC13)
-
         );
 
         PieChart chart = new PieChart(chartData);
@@ -989,4 +990,46 @@ public class sceneSelector implements Initializable {
     public void selectSHT(){
         System.out.println("Clicked");
     }
+
+    public void homeReloader() {
+        Timer reloadHome = new Timer();
+        reloadHome.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                Platform.runLater(() -> {
+                    try {
+                        ListView<Skate> lv = (ListView<Skate>) scene.lookup("#SHHListView");
+                        if (lv != null) {
+                            listViews.loadAnnouncementSHListView(lv);
+                        }
+                        setHomeTrendsLabels();
+                        System.out.println("Home Reloader");
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
+            }
+        }, 0, 1000); // reload every second
+
+    }
+
+    public void setHomeTrendsLabels() throws SQLException {
+        String mostPopularSkateSizeStr = DBConnect.MostPopularSize();
+        String mostPopularCustomerTypeStr = DBConnect.MostPopularCustomerType();
+        int customerAverageInt = DBConnect.totalCustomerAverage();
+        int customerAverageNoSpectatorsInt = DBConnect.totalCustomerAverageNoSpec();
+
+        Label mostPopularSkateSize = (Label) root.lookup("#mostPopularSkateSize");
+        Label mostPopularCustomerType = (Label) root.lookup("#mostPopularCustomerType");
+        Label customerAverage = (Label) root.lookup("#customerAveragePerSession");
+        Label customerAverageNoSpec = (Label) root.lookup("#customerAveragePerSessionNoSpec");
+
+
+        mostPopularSkateSize.setText(String.valueOf(mostPopularSkateSizeStr));
+        mostPopularCustomerType.setText(String.valueOf(mostPopularCustomerTypeStr));
+        customerAverage.setText(String.valueOf(customerAverageInt));
+        customerAverageNoSpec.setText(String.valueOf(customerAverageNoSpectatorsInt));
+
+    }
+
 }

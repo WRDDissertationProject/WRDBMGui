@@ -727,4 +727,91 @@ public class DBConnect {
         }
         return neededList;
     }
+
+    public static String MostPopularCustomerType() throws SQLException {
+        String mostPopularType = null;
+        int maxCount = 0;
+
+        String[] customerTypes = {"own_skaters", "hire_skaters", "spectators"};
+        for (String type : customerTypes) {
+            PreparedStatement stmt = connection.prepareStatement(
+                    "SELECT COUNT(*) AS count FROM previous_sessions WHERE " + type + " > 0"
+            );
+            ResultSet resultSet = stmt.executeQuery();
+
+            if (resultSet.next()) {
+                int count = resultSet.getInt("count");
+                if (count > maxCount) {
+                    maxCount = count;
+                    mostPopularType = type;
+                }
+            }
+        }
+
+        if (mostPopularType != null) {
+            switch (mostPopularType) {
+                case "own_skaters":
+                    return "Own Skaters";
+                case "hire_skaters":
+                    return "Hire Skaters";
+                case "spectators":
+                    return "Spectators";
+                default:
+                    return "Unknown";
+            }
+        } else {
+            return "Not Enough Data";
+        }
+    }
+
+    public static int totalCustomerAverage() throws SQLException {
+        int totalCustomers = 0;
+        int sessionCount = 0;
+
+        PreparedStatement stmt = connection.prepareStatement(
+                "SELECT own_skaters, hire_skaters, spectators FROM previous_sessions"
+        );
+        ResultSet resultSet = stmt.executeQuery();
+
+        while (resultSet.next()) {
+            int ownSkaters = resultSet.getInt("own_skaters");
+            int hireSkaters = resultSet.getInt("hire_skaters");
+            int spectators = resultSet.getInt("spectators");
+
+            totalCustomers += ownSkaters + hireSkaters + spectators;
+            sessionCount++;
+        }
+
+        if (sessionCount > 0) {
+            return totalCustomers / sessionCount;
+        } else {
+            // Handle the case when there are no records in the table
+            return 0;
+        }
+    }
+
+    public static int totalCustomerAverageNoSpec() throws SQLException {
+        int totalCustomers = 0;
+        int sessionCount = 0;
+
+        PreparedStatement stmt = connection.prepareStatement(
+                "SELECT own_skaters, hire_skaters FROM previous_sessions"
+        );
+        ResultSet resultSet = stmt.executeQuery();
+
+        while (resultSet.next()) {
+            int ownSkaters = resultSet.getInt("own_skaters");
+            int hireSkaters = resultSet.getInt("hire_skaters");
+
+            totalCustomers += ownSkaters + hireSkaters;
+            sessionCount++;
+        }
+
+        if (sessionCount > 0) {
+            return totalCustomers / sessionCount;
+        } else {
+            // Handle the case when there are no records in the table
+            return 0;
+        }
+    }
 }
