@@ -18,19 +18,30 @@ package com.example.willsrollerdiscobmgui;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 
+/*Resources Used:
+ * Java DateTime Layouts:  */
 public class dateTime {
+    //Method that fetches the full date combined with the full time (Including Seconds), returned to class that called it.
     public static String fullDateTime() {
+        //Fetches current machine time
         LocalDateTime fullDateTime = LocalDateTime.now();
+        //Passes into a layout
         DateTimeFormatter formattedFullDate = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
         return fullDateTime.format(formattedFullDate);
     }
+    //Creates a date object, passes into a format so just the date is used, returned to class that called it.
     public static String justDate(){
+        //Fetches current machine time
         LocalDateTime justDate = LocalDateTime.now();
+        //Passes into a layout
         DateTimeFormatter formattedJustDate = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         return justDate.format(formattedJustDate);
     }
+    //Creates a time object, passes into a format so just the date is used, returned to class that called it.
     public static String justTime(){
+        //Fetches current machine time
         LocalDateTime justTime = LocalDateTime.now();
+        //Passes into a layout
         DateTimeFormatter formattedJustTime = DateTimeFormatter.ofPattern("HH:mm:ss");
         return justTime.format(formattedJustTime);
     }

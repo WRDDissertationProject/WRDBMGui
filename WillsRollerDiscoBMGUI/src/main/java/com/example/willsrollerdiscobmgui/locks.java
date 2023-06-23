@@ -11,6 +11,11 @@
  *   through a transaction.
  *   */
 
+/*Resources Used:
+ * Locks:
+ * Lock Theory  */
+
+
 //PACKAGE
 package com.example.willsrollerdiscobmgui;
 
@@ -18,12 +23,25 @@ package com.example.willsrollerdiscobmgui;
 import java.sql.*;
 
 public class locks {
-    String url = "jdbc:mysql://localhost:3306/wrdDatabase";
+    /******************************************************
+     Local Testing Database Connections
+
+     String url = "jdbc:mysql://localhost:3306/wrdDatabase";
+     String username = "root";
+     String password = "root";
+     ********************************************************/
+
+    /*Docker Database Connections
+     * Using Local host currently due to firewall issues with University Connections*/
+    String url = "jdbc:mysql://localhost:3307/wrddatabase";
+    //String url = "jdbc:mysql://172.17.0.2:3307/wrddatabase";
     String username = "root";
-    String password = "root";
+    String password = "my-secret-pw";
     static Connection connection = null;
     static ResultSet rs;
 
+    //Duplicate code from DBConnect, used to establish a database connection for the locks
+    //Could be refactored and removed on refinement
     public void connect() {
         {
             try {
@@ -45,6 +63,8 @@ public class locks {
         }
     }
 
+    //Used to lock the database
+    //Stops concurrency issues by making transactions wait for resources to be out of use before starting transaction
     public static void lock(String resourceName, String lockedBy) throws SQLException {
         String query = "UPDATE locks SET lockedBy = ?, lockTime = NOW() WHERE resourceName = ? AND lockedBy IS NULL";
 
@@ -59,6 +79,8 @@ public class locks {
         }
     }
 
+    //When a transaction is finished, unlock is called and the locked resource is set to null so other
+    //transactions can be completed on the same database table
     public static void unlock(String resourceName, String lockedBy) throws SQLException {
         String query = "UPDATE locks SET lockedBy = NULL, lockTime = NULL WHERE resourceName = ? AND lockedBy = ?";
 
@@ -66,5 +88,13 @@ public class locks {
         statement.setString(1, resourceName);
         statement.setString(2, lockedBy);
         statement.executeUpdate();
+    }
+
+    //used to clear all locks current in use, used on a software restart
+    //prevents issues with hanging locks preventing data transfer
+    public static void resetLocks() throws SQLException {
+        PreparedStatement stmt = connection.prepareStatement("UPDATE locks SET lockedBy = null, lockTime = null");
+        stmt.executeUpdate();
+        System.out.println("Locks Reset");
     }
 }

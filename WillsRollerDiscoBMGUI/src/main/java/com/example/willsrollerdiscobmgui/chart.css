@@ -10,4 +10,5 @@
  *   used to override conflicting styling issues, CSS is often needed to override JavaFX / XML styling that is not being
      applied. Known bug, isolated from other CSS for clarity of chart only styling*/
 
+/*Setting background colours of pie charts */
 .chart-pie-label {-fx-fill: #bebebe;}

@@ -17,8 +17,10 @@ package com.example.willsrollerdiscobmgui;
 public class getStartingSkates {
 
     public void initialiseSkates(){
+        //Testing statement printed to console
         System.out.println("Initialised Skates Test");
 
+        //Fetching all sizes as starting values
         int size1Max = DBConnect.fetchSkateSizeAmount("1");
         int size2Max = DBConnect.fetchSkateSizeAmount("2");
         int size3Max = DBConnect.fetchSkateSizeAmount("3");
@@ -35,6 +37,7 @@ public class getStartingSkates {
         int size12CHMax = DBConnect.fetchSkateSizeAmount("C12");
         int size13CHMax = DBConnect.fetchSkateSizeAmount("C12");
 
+        //Inserts starting values into current skates, separate table to prevent changes to inventory amount
         DBConnect.insertIntoCurrentSkates("1",size1Max);
         DBConnect.insertIntoCurrentSkates("2",size2Max);
         DBConnect.insertIntoCurrentSkates("3",size3Max);
@@ -50,6 +53,5 @@ public class getStartingSkates {
         DBConnect.insertIntoCurrentSkates("C11",size11CHMax);
         DBConnect.insertIntoCurrentSkates("C12",size12CHMax);
         DBConnect.insertIntoCurrentSkates("C13",size13CHMax);
-
     }
 }

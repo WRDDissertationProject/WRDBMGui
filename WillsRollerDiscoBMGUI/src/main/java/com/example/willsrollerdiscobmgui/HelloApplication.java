@@ -24,18 +24,23 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.sql.SQLException;
 
+/*Resources Used:
+ * On Exit Code:  */
 public class HelloApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
+        //loading the starting scene and setting window size
         Parent root = FXMLLoader.load(getClass().getResource("login.fxml"));
         Scene scene = new Scene(root,800,600);
 
+        //setting window related values, such as name, icon and scene
         stage.setTitle("Wills Roller Disco Business Management Portal");
         stage.getIcons().add(new Image(getClass().getResourceAsStream("icon.png")));
         scene.setFill(null);
         stage.setScene(scene);
         stage.show();
 
+        //on exit stops all process to ensure nothing continues running in the background.
         stage.setOnCloseRequest(windowEvent -> {
             Platform.exit();
             System.exit(0);
@@ -43,15 +48,17 @@ public class HelloApplication extends Application {
     }
 
     public static void main(String[] args) throws SQLException {
-        //Database Connection
+        //When started, application connects to the core database
         DBConnect connect = new DBConnect();
         connect.connect();
 
+        //After the database connection is established, the locks' connection is established
         locks locks = new locks();
         locks.connect();
+        //all locks are reset so any hang-ups from previous are removed
+        locks.resetLocks();
 
-        DBConnect.resetLocks();
-        //Launches the app
+        //application launch
         launch();
     }
 }
